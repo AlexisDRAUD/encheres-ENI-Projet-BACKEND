@@ -12,7 +12,6 @@ public interface ArticlesService {
 
     void creerArticle(Article article);
 
-
     void editArticle(Article article);
 
     void supprimerArticle(long id);

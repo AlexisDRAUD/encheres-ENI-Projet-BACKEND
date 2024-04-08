@@ -1,4 +1,4 @@
-package fr.eni.ecole.enchereseniprojetbackend.bll.mock;
+package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
@@ -7,11 +7,11 @@ import fr.eni.ecole.enchereseniprojetbackend.dal.ArticleRepository;
 import java.util.Collections;
 import java.util.List;
 
-public class ArticlesMock implements ArticlesService {
+public class ArticlesServicesImpl implements ArticlesService {
 
     final ArticleRepository articleRepository;
 
-    public ArticlesMock(ArticleRepository articleRepository) {
+    public ArticlesServicesImpl(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
