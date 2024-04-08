@@ -7,15 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Autowired
-    private UtilisateurRepository ur;
+    UtilisateurRepository ur;
 
     @Override
     public List<Utilisateur> getUsers() {
         return ur.findAll();
+    }
+
+    @Override
+    public Utilisateur recupererUtilisateurParPseudo(String pseudo) {
+        List<Utilisateur> utilisateurs = ur.findAll();
+        for (Utilisateur utilisateur : utilisateurs) {
+            if (utilisateur.getPseudo().equals(pseudo)) {
+                return utilisateur;
+            }
+        }
+        return  null;
     }
 
     @Override

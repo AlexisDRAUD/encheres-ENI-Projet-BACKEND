@@ -6,6 +6,9 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 public interface UtilisateurService {
 
     List<Utilisateur> getUsers();
+
+    Utilisateur recupererUtilisateurParPseudo(String pseudo);
+
     Utilisateur getUserById(long id);
 
     void addUser(Utilisateur utilisateur);
