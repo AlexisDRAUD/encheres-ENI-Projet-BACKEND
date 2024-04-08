@@ -26,9 +26,9 @@ public class DBMock {
         this.ar = ar;
         this.ur = ur;
 
+        er.deleteAll();
         ar.deleteAll();
         ur.deleteAll();
-        er.deleteAll();
         rr.deleteAll();
         cr.deleteAll();
 
@@ -51,9 +51,9 @@ public class DBMock {
         cr.save(cat3);
         cr.save(cat4);
 
-        Utilisateur u1 = new Utilisateur("admin", "admin", "admin@test.com", "0102030405", adresse1, "password", 500, true);
-        Utilisateur u2 = new Utilisateur("user1", "user1", "user1@test.com", "0102030405", adresse2, "password", 500, false);
-        Utilisateur u3 = new Utilisateur("user2", "user2", "user2@test.com", "0102030405", adresse3, "password", 500, false);
+        Utilisateur u1 = new Utilisateur("admin","admin", "admin", "admin@test.com", "0102030405", adresse1, "password", 500, true);
+        Utilisateur u2 = new Utilisateur("user1","user1", "user1", "user1@test.com", "0102030405", adresse2, "password", 500, false);
+        Utilisateur u3 = new Utilisateur("user2","user2", "user2", "user2@test.com", "0102030405", adresse3, "password", 500, false);
         ur.save(u1);
         ur.save(u2);
         ur.save(u3);

@@ -46,8 +46,9 @@ public class Utilisateur {
     @NotNull
     private boolean administrateur;
 
-    public Utilisateur(String pseudo, String nom, String email, String telephone, Retrait adresse, String password, long credit, boolean administrateur) {
+    public Utilisateur(String pseudo, String prenom, String nom, String email, String telephone, Retrait adresse, String password, long credit, boolean administrateur) {
         this.pseudo = pseudo;
+        this.prenom = prenom;
         this.nom = nom;
         this.email = email;
         this.telephone = telephone;
