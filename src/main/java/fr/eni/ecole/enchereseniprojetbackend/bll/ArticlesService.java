@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface ArticlesService {
-
     List<Article> consulterArticle();
     Article consulterArticleParId(long id);
 

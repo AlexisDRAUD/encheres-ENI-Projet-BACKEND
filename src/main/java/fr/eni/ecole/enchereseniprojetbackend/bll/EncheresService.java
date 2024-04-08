@@ -4,7 +4,7 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 
 import java.util.List;
 
-public interface Encheres {
+public interface EncheresService {
     List<Enchere> consulterEnchere();
     Enchere consulterEnchereParId(long id);
 
