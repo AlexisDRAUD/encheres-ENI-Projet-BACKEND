@@ -2,6 +2,7 @@ package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +33,10 @@ public class UtilisateurController {
                            @PathVariable("id") Long id) {
         if (us.getUserById(id) != null) {
             user.setId(id);
-            us.updateUser(user); // save() effectue une
-            // modification si l'objet possède un id
+            us.updateUser(user);
         }
-        // sinon, on lance une ereur
         else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le " +
-                    "membre n'existe pas en base de donnée");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet utilisateur n'existe pas !");
         }
     }
 
@@ -47,10 +45,8 @@ public class UtilisateurController {
         if (us.getUserById(id) != null) {
             us.deleteUserById(id);
         }
-        // sinon, on lance une ereur
         else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le " +
-                    "membre n'existe pas en base de donnée");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet utilisateur n'existe pas !");
         }
     }
 }
