@@ -1,6 +1,9 @@
 package fr.eni.ecole.enchereseniprojetbackend.bo;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,19 +20,23 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Le nom de l'article est obligatoire")
     private String nomArticle;
 
+    @NotBlank(message = "La description est obligatoire")
     private String description;
 
+    @NotNull
     private LocalDateTime dateDebut;
 
+    @NotNull
     private LocalDateTime dateFin;
 
+    @Positive
     private long miseAPrix;
 
+    @Positive
     private long prixVente;
-
-    private EtatVente etatVente;
 
     @ManyToOne
     private Categorie categorie;
@@ -44,7 +51,7 @@ public class Article {
     private Retrait retrait;
 
     public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
-                   long miseAPrix, long prixVente, EtatVente etatVente, Categorie categorie, Utilisateur vendeur,
+                   long miseAPrix, long prixVente, Categorie categorie, Utilisateur vendeur,
                    Retrait retrait) {
         this.nomArticle = nomArticle;
         this.description = description;
@@ -52,14 +59,13 @@ public class Article {
         this.dateFin = dateFin;
         this.miseAPrix = miseAPrix;
         this.prixVente = prixVente;
-        this.etatVente = etatVente;
         this.categorie = categorie;
         this.vendeur = vendeur;
         this.retrait = retrait;
     }
 
     public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
-                   long miseAPrix, long prixVente, EtatVente etatVente, Categorie categorie, Utilisateur vendeur,
+                   long miseAPrix, long prixVente, Categorie categorie, Utilisateur vendeur,
                    Utilisateur acheteur,
                    Retrait retrait) {
         this.nomArticle = nomArticle;
@@ -68,7 +74,6 @@ public class Article {
         this.dateFin = dateFin;
         this.miseAPrix = miseAPrix;
         this.prixVente = prixVente;
-        this.etatVente = etatVente;
         this.categorie = categorie;
         this.vendeur = vendeur;
         this.acheteur = acheteur;
@@ -81,5 +86,16 @@ public class Article {
 
     public Long getId() {
         return id;
+    }
+
+    public EtatVente getEtatVente() {
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isBefore(dateDebut)) {
+            return EtatVente.CREER;
+        } else if (now.isAfter(dateDebut) && now.isBefore(dateFin)) {
+            return EtatVente.EN_COURS;
+        } else {
+            return EtatVente.VENDU;
+        }
     }
 }
