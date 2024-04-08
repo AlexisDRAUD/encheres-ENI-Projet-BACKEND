@@ -3,10 +3,11 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.dal.ArticleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-
+@Service
 public class ArticlesServicesImpl implements ArticlesService {
 
     final ArticleRepository articleRepository;

@@ -1,12 +1,10 @@
 package fr.eni.ecole.enchereseniprojetbackend.bo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Categorie;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,17 +31,19 @@ public class Article {
 
     private EtatVente prixVente;
 
+    @ManyToOne
     private Categorie categorie;
 
+    @ManyToOne
     private Utilisateur vendeur;
 
+    @ManyToOne
     private Utilisateur acheteur;
 
-    private List<Enchere> encheres;
-
+    @ManyToOne
     private Retrait retrait;
 
-    public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin, long miseAPrix, EtatVente prixVente, Categorie categorie, Utilisateur vendeur, List<Enchere> encheres, Retrait retrait) {
+    public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin, long miseAPrix, EtatVente prixVente, Categorie categorie, Utilisateur vendeur, Retrait retrait) {
         this.nomArticle = nomArticle;
         this.description = description;
         this.dateDebut = dateDebut;
@@ -52,11 +52,10 @@ public class Article {
         this.prixVente = prixVente;
         this.categorie = categorie;
         this.vendeur = vendeur;
-        this.encheres = encheres;
         this.retrait = retrait;
     }
 
-    public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin, long miseAPrix, EtatVente prixVente, Categorie categorie, Utilisateur vendeur, Utilisateur acheteur, List<Enchere> encheres, Retrait retrait) {
+    public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin, long miseAPrix, EtatVente prixVente, Categorie categorie, Utilisateur vendeur, Utilisateur acheteur, Retrait retrait) {
         this.nomArticle = nomArticle;
         this.description = description;
         this.dateDebut = dateDebut;
@@ -66,7 +65,14 @@ public class Article {
         this.categorie = categorie;
         this.vendeur = vendeur;
         this.acheteur = acheteur;
-        this.encheres = encheres;
         this.retrait = retrait;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

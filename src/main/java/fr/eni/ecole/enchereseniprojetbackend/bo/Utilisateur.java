@@ -1,12 +1,9 @@
 package fr.eni.ecole.enchereseniprojetbackend.bo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 
 @Entity
@@ -29,6 +26,7 @@ public class Utilisateur {
 
     private String telephone;
 
+    @OneToOne
     private Retrait adresse;
 
     private String password;

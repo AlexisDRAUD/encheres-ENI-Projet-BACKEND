@@ -1,11 +1,10 @@
 package fr.eni.ecole.enchereseniprojetbackend.bo;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
+@Entity
 public class Enchere {
 
     @Id
@@ -15,4 +14,9 @@ public class Enchere {
     private Date dateEnchère;
 
     private Long montant_enchere;
+
+    @ManyToOne
+    private Utilisateur utilisateur;
+    @ManyToOne
+    private Article article;
 }

@@ -4,7 +4,7 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
+
 public interface ArticlesService {
 
     List<Article> consulterArticle();
