@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Categorie;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -29,7 +27,9 @@ public class Article {
 
     private long miseAPrix;
 
-    private EtatVente prixVente;
+    private long prixVente;
+
+    private EtatVente etatVente;
 
     @ManyToOne
     private Categorie categorie;
@@ -43,25 +43,32 @@ public class Article {
     @ManyToOne
     private Retrait retrait;
 
-    public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin, long miseAPrix, EtatVente prixVente, Categorie categorie, Utilisateur vendeur, Retrait retrait) {
+    public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
+                   long miseAPrix, long prixVente, EtatVente etatVente, Categorie categorie, Utilisateur vendeur,
+                   Retrait retrait) {
         this.nomArticle = nomArticle;
         this.description = description;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.miseAPrix = miseAPrix;
         this.prixVente = prixVente;
+        this.etatVente = etatVente;
         this.categorie = categorie;
         this.vendeur = vendeur;
         this.retrait = retrait;
     }
 
-    public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin, long miseAPrix, EtatVente prixVente, Categorie categorie, Utilisateur vendeur, Utilisateur acheteur, Retrait retrait) {
+    public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
+                   long miseAPrix, long prixVente, EtatVente etatVente, Categorie categorie, Utilisateur vendeur,
+                   Utilisateur acheteur,
+                   Retrait retrait) {
         this.nomArticle = nomArticle;
         this.description = description;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.miseAPrix = miseAPrix;
         this.prixVente = prixVente;
+        this.etatVente = etatVente;
         this.categorie = categorie;
         this.vendeur = vendeur;
         this.acheteur = acheteur;

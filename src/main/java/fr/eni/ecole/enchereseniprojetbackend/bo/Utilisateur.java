@@ -35,4 +35,14 @@ public class Utilisateur {
 
     private boolean administrateur;
 
+    public Utilisateur(String pseudo, String nom, String email, String telephone, Retrait adresse, String password, long credit, boolean administrateur) {
+        this.pseudo = pseudo;
+        this.nom = nom;
+        this.email = email;
+        this.telephone = telephone;
+        this.adresse = adresse;
+        this.password = password;
+        this.credit = credit;
+        this.administrateur = administrateur;
+    }
 }

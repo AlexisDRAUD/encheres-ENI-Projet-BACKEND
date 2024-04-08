@@ -19,4 +19,8 @@ public class Categorie {
     private Long id;
 
     private String libelle;
+
+    public Categorie(String libelle) {
+        this.libelle = libelle;
+    }
 }
