@@ -1,11 +1,11 @@
-package fr.eni.ecole.enchereseniprojetbackend.bll.mock;
+package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
-import fr.eni.ecole.enchereseniprojetbackend.bll.Encheres;
+import fr.eni.ecole.enchereseniprojetbackend.bll.EncheresService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 
 import java.util.List;
 
-public class EncheresMock implements Encheres {
+public class EnchereServiceImpl implements EncheresService {
     @Override
     public List<Enchere> consulterEnchere() {
         return null;
