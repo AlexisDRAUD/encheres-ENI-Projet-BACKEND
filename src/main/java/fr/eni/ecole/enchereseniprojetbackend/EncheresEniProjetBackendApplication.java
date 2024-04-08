@@ -1,4 +1,4 @@
-package org.example.enchereseniprojetbackend;
+package fr.eni.ecole.enchereseniprojetbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

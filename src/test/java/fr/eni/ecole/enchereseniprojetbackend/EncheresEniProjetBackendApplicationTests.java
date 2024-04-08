@@ -1,4 +1,4 @@
-package org.example.enchereseniprojetbackend;
+package fr.eni.ecole.enchereseniprojetbackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
