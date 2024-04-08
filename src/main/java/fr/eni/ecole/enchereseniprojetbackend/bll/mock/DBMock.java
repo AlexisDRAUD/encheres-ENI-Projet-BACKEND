@@ -2,7 +2,6 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.mock;
 
 import fr.eni.ecole.enchereseniprojetbackend.bo.*;
 import fr.eni.ecole.enchereseniprojetbackend.dal.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
