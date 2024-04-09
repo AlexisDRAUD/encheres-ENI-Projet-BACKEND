@@ -1,7 +1,6 @@
 package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.dal.RetraitRepository;
 import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurRepository;
@@ -40,8 +39,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public void addUser(Utilisateur utilisateur) {
-        ur.save(utilisateur);
         rr.save(utilisateur.getAdresse());
+        ur.save(utilisateur);
     }
 
     @Override
@@ -53,5 +52,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public void deleteUserById(long id) {
         ur.deleteById(id);
+    }
+
+    @Override
+    public boolean usernameAlreadyExist(String pseudo) {
+        return ur.existsByPseudo(pseudo);
+    }
+
+    @Override
+    public boolean emailAlreadyExist( String email) {
+        return ur.existsByEmail(email);
     }
 }

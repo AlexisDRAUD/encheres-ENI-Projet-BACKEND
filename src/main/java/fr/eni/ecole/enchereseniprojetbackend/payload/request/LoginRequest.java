@@ -1,4 +1,4 @@
-package fr.eni.ecole.enchereseniprojetbackend.Security;
+package fr.eni.ecole.enchereseniprojetbackend.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 

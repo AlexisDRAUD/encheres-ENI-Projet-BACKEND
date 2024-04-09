@@ -50,11 +50,6 @@ public class UtilisateurController {
         return us.getUserById(id);
     }
 
-    @PostMapping
-    public void addUser(@RequestBody @Valid Utilisateur user) {
-        us.addUser(user);
-    }
-
     @PutMapping("/{id}")
     public void putUser(@RequestBody @Valid Utilisateur user,
                            @PathVariable("id") Long id) {

@@ -16,4 +16,9 @@ public interface UtilisateurService {
     void updateUser(Utilisateur utilisateur);
 
     void deleteUserById(long id);
+
+    boolean usernameAlreadyExist(String pseudo);
+
+    boolean emailAlreadyExist(String email);
+
 }

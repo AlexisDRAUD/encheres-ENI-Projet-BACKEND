@@ -1,10 +1,12 @@
 package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.Security.JwtUtils;
-import fr.eni.ecole.enchereseniprojetbackend.Security.LoginRequest;
-import fr.eni.ecole.enchereseniprojetbackend.Security.SignupRequest;
+import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
+import fr.eni.ecole.enchereseniprojetbackend.payload.request.LoginRequest;
+import fr.eni.ecole.enchereseniprojetbackend.payload.request.SignupRequest;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
-import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurRepository;
 import fr.eni.ecole.enchereseniprojetbackend.payload.response.JwtResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class AuthController {
 	AuthenticationManager authenticationManager;
 
 	@Autowired
-	UtilisateurRepository ur;
+	UtilisateurService us;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -48,25 +50,30 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		if (ur.existsByPseudo(signUpRequest.getUsername())) {
+		if (us.usernameAlreadyExist(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
 					.body("Error: Username is already taken!");
 		}
 
-		if (ur.existsByEmail(signUpRequest.getEmail())) {
+		if (us.emailAlreadyExist(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
 					.body("Error: Email is already in use!");
 		}
 
-//		// Create new user's account
-//		Utilisateur user = new Utilisateur(signUpRequest.getUsername(),
-//							 signUpRequest.getEmail(),
-//							 encoder.encode(signUpRequest.getPassword()));
+		// Create new user's account
+		Utilisateur user = new Utilisateur(signUpRequest.getUsername(),
+				signUpRequest.getPrenom(),
+				signUpRequest.getNom(),
+				signUpRequest.getEmail(),
+							 signUpRequest.getTelephone(),
+							 new Retrait(signUpRequest.getRue(), signUpRequest.getCodePostal(),
+									 signUpRequest.getVille()),
+							 encoder.encode(signUpRequest.getPassword()),
+				500, false);
 
-
-//		ur.save(ut);
+		us.addUser(user);
 
 		return ResponseEntity.ok("User registered successfully!");
 	}
