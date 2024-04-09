@@ -16,18 +16,18 @@ public class MyUserDetailsService implements UserDetailsService {
 
     /**
      * Comment est-ce qu'on va chercher un utilisateur Spring Security à partir d'un pseudo?
-     * => à partir du service membreService
+     * => à partir du service utilisateurService
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Utilisateur utilisateur = utilisateurService.recupererUtilisateurParPseudo(username);
 
-        // si le membre n'est pas trouvé : je lance une exception afin que Spring Security affiche une erreur dans le formulaire
+        // Si l'utilisateur n'est pas trouvé : je lance une exception afin que Spring Security affiche une erreur dans le formulaire
         if (utilisateur == null){
             throw new UsernameNotFoundException(username);
         }
 
-        // si on a trouvé un membre, je retourne un utilisateur Spring Security qui englobe le membre
+        // Si on a trouvé un utilisateur, je retourne un objet UserDetails Spring Security qui englobe les informations de l'utilisateur
         return new UtilisateurSpringSecurity(utilisateur);
     }
 }
