@@ -1,5 +1,6 @@
 package fr.eni.ecole.enchereseniprojetbackend.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,13 @@ public class SecurityConfiguration {
      * - soit une liste d'url : .requestMatchers("/pageConnecte1", "/pageConnect2", "/pageConnecte3")
      * - soit une url avec un wildcard (*) : .requestMatchers("/prive/*")
      */
+
+    @Autowired
+    private JwtFilter jwtFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf( (csrf) -> csrf.ignoringRequestMatchers("/**"));
         // on autorise la requête http entrante en fonction de ces critères :
         http.authorizeHttpRequests((authorize) -> authorize
                         // si jamais la requête veut aller sur l'url "/pageConnecte" : alors on doit être authentifié (.authenticated())
@@ -48,16 +55,8 @@ public class SecurityConfiguration {
                 .formLogin(Customizer.withDefaults())
                 // quand on se déconnecte=> on redirige vers l'accueil
                 .logout((logout) -> logout.logoutSuccessUrl("/"));
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    /**
-     * On définit un bean pour l'utilitaire d'encryption de mot de passe
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // BCryptPasswordEncoder : classe utilitaire de Spring Security qui decrypte/encrypte les mots de passe
-        return new BCryptPasswordEncoder();
     }
 
 /*
@@ -66,6 +65,7 @@ public class SecurityConfiguration {
  * A partir du moment ou Spring voit qu'il y a un @Bean de type InMemoryUserDetailsManager dans le contexte Spring
  * Il va l'utiliser pour chercher les utilisateurs
 */
+    /*
  @Bean
  public InMemoryUserDetailsManager userDetailsService() {
  // On a une liste d'utilisateurs Spring Security (interface UserDetails)
@@ -80,7 +80,7 @@ public class SecurityConfiguration {
 
  return new InMemoryUserDetailsManager(userDetailsList);
 
- }
+ }*/
 
 
 }

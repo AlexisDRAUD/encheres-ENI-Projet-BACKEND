@@ -46,6 +46,6 @@ public class CategorieServicesImpl implements CategorieService {
 
     @Override
     public void supprimerCategorie(long id) {
-        categorieRepository.deleteAllById(Collections.singleton(id));
+        categorieRepository.deleteById(id);
     }
 }
