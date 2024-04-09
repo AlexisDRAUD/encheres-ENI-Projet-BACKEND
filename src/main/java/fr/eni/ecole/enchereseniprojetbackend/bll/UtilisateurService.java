@@ -7,7 +7,7 @@ public interface UtilisateurService {
 
     List<Utilisateur> getUsers();
 
-    Utilisateur recupererUtilisateurParPseudo(String pseudo);
+    Utilisateur getUserByPseudoOrEmail(String username);
 
     Utilisateur getUserById(long id);
 

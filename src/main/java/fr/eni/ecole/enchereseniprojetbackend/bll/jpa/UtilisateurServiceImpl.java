@@ -25,8 +25,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public Utilisateur recupererUtilisateurParPseudo(String pseudo) {
-        return ur.findByPseudo(pseudo);
+    public Utilisateur getUserByPseudoOrEmail(String username) {
+        Utilisateur user = ur.findByPseudo(username);
+        if (user == null) {
+            user = ur.findByEmail(username);
+        }
+        return user;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class MyUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Utilisateur utilisateur = utilisateurService.recupererUtilisateurParPseudo(username);
+        Utilisateur utilisateur = utilisateurService.getUserByPseudoOrEmail(username);
 
         // Si l'utilisateur n'est pas trouvé : je lance une exception afin que Spring Security affiche une erreur dans le formulaire
         if (utilisateur == null){
