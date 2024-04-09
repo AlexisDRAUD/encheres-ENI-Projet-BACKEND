@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -32,7 +32,7 @@ public class AuthController {
 	JwtUtils jwtUtils;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public String authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -42,7 +42,7 @@ public class AuthController {
 		
 		UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) authentication.getPrincipal();
 
-		return ResponseEntity.ok(jwt);
+		return jwt;
 	}
 
 	@PostMapping("/signup")
@@ -63,8 +63,8 @@ public class AuthController {
 //		Utilisateur user = new Utilisateur(signUpRequest.getUsername(),
 //							 signUpRequest.getEmail(),
 //							 encoder.encode(signUpRequest.getPassword()));
-
-
+//
+//
 //		ur.save(ut);
 
 		return ResponseEntity.ok("User registered successfully!");
