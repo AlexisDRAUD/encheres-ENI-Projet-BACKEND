@@ -13,8 +13,4 @@ public class EncheresEniProjetBackendApplication {
 		SpringApplication.run(EncheresEniProjetBackendApplication.class, args);
 	}
 
-	@Bean // on définit un bean pour l'utilitaire d'encryption de mot de passe
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }

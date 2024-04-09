@@ -3,6 +3,7 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.mock;
 import fr.eni.ecole.enchereseniprojetbackend.bo.*;
 import fr.eni.ecole.enchereseniprojetbackend.dal.*;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,23 +17,23 @@ public class DBMock {
     final EnchereRepository er;
     final ArticleRepository ar;
     final UtilisateurRepository ur;
+    final PasswordEncoder encoder;
 
 
-    public DBMock(RetraitRepository rr, CategorieRepository cr, EnchereRepository er, ArticleRepository ar, UtilisateurRepository ur) {
+    public DBMock(RetraitRepository rr, CategorieRepository cr, EnchereRepository er, ArticleRepository ar, UtilisateurRepository ur, PasswordEncoder encoder) {
 
         this.rr = rr;
         this.cr = cr;
         this.er = er;
         this.ar = ar;
         this.ur = ur;
+        this.encoder = encoder;
 
         er.deleteAll();
         ar.deleteAll();
         ur.deleteAll();
         rr.deleteAll();
         cr.deleteAll();
-
-
 
 
         Retrait adresse1 = new Retrait("rue du test1", 79000, "Niort");
@@ -51,9 +52,9 @@ public class DBMock {
         cr.save(cat3);
         cr.save(cat4);
 
-        Utilisateur u1 = new Utilisateur("admin","admin", "admin", "admin@test.com", "0102030405", adresse1, "password", 500, true);
-        Utilisateur u2 = new Utilisateur("user1","user1", "user1", "user1@test.com", "0102030405", adresse2, "password", 500, false);
-        Utilisateur u3 = new Utilisateur("user2","user2", "user2", "user2@test.com", "0102030405", adresse3, "password", 500, false);
+        Utilisateur u1 = new Utilisateur("admin","admin", "admin", "admin@test.com", "0102030405", adresse1, encoder.encode("password"), 500, true);
+        Utilisateur u2 = new Utilisateur("user1","user1", "user1", "user1@test.com", "0102030405", adresse2, encoder.encode("password"), 500, false);
+        Utilisateur u3 = new Utilisateur("user2","user2", "user2", "user2@test.com", "0102030405", adresse3, encoder.encode("password"), 500, false);
         ur.save(u1);
         ur.save(u2);
         ur.save(u3);

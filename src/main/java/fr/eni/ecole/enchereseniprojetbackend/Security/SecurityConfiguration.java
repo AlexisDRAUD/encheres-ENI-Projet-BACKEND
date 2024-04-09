@@ -3,19 +3,16 @@ package fr.eni.ecole.enchereseniprojetbackend.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration // Nécessaire lorsqu'on définit des @Bean dans une classe
 @EnableWebSecurity
@@ -34,53 +31,52 @@ public class SecurityConfiguration {
      */
 
     @Autowired
-    private JwtFilter jwtFilter;
+    MyUserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf( (csrf) -> csrf.ignoringRequestMatchers("/**"));
-        // on autorise la requête http entrante en fonction de ces critères :
-        http.authorizeHttpRequests((authorize) -> authorize
-                        // si jamais la requête veut aller sur l'url "/pageConnecte" : alors on doit être authentifié (.authenticated())
-                        //.requestMatchers(regexMatcher("/films/.*/avis")).authenticated()
-                        //.requestMatchers("/membres").authenticated()
-                        // si jamais la requête veut aller sur l'url "/pageAdmin" : alors on doit avoir le rôle admin (.hasRole("admin"))
-                        //.requestMatchers("/films/creer", "/participants").hasRole("admin")
-                        // pour toute les autres requête : on autorise sans contraintes
-                        .requestMatchers("/**").permitAll()
-                )
-                // on utilise une authentification basique (utilisateur / mot de passe)
-                .httpBasic(Customizer.withDefaults())
-                // on utilise le formulaire par défaut proposé par Spring Security
-                .formLogin(Customizer.withDefaults())
-                // quand on se déconnecte=> on redirige vers l'accueil
-                .logout((logout) -> logout.logoutSuccessUrl("/"));
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+    public JwtFilter authenticationJwtTokenFilter() {
+        return new JwtFilter();
     }
 
-/*
- * On définit un bean pour la gestion des utilisateurs en mémoire (solution temporaire)
- *
- * A partir du moment ou Spring voit qu'il y a un @Bean de type InMemoryUserDetailsManager dans le contexte Spring
- * Il va l'utiliser pour chercher les utilisateurs
-*/
-    /*
- @Bean
- public InMemoryUserDetailsManager userDetailsService() {
- // On a une liste d'utilisateurs Spring Security (interface UserDetails)
- List<UserDetails> userDetailsList = new ArrayList<>();
- // on définit un utilisateur avec nom "membre", mot de passe "membre123", role : "user"
- userDetailsList.add(
- User.withUsername("membre").password(passwordEncoder().encode("membre123"))
- .roles("user").build());
- // on définit un utilisateur avec nom "admin", mot de passe "admin123", role : "admin", "user"
- userDetailsList.add( User.withUsername("admin").password(passwordEncoder().encode("admin123"))
- .roles("admin", "user").build());
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
- return new InMemoryUserDetailsManager(userDetailsList);
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
 
- }*/
+        return authProvider;
+    }
 
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/api/test/**").permitAll()
+                                .anyRequest().authenticated()
+                );
+
+        http.authenticationProvider(authenticationProvider());
+
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 
 }
