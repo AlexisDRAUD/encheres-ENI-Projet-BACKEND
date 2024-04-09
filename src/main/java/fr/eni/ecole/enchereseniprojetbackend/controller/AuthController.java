@@ -32,7 +32,7 @@ public class AuthController {
 	JwtUtils jwtUtils;
 
 	@PostMapping("/signin")
-	public String authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -42,7 +42,7 @@ public class AuthController {
 		
 		UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) authentication.getPrincipal();
 
-		return jwt;
+		return ResponseEntity.ok(jwt);
 	}
 
 	@PostMapping("/signup")
@@ -63,8 +63,8 @@ public class AuthController {
 //		Utilisateur user = new Utilisateur(signUpRequest.getUsername(),
 //							 signUpRequest.getEmail(),
 //							 encoder.encode(signUpRequest.getPassword()));
-//
-//
+
+
 //		ur.save(ut);
 
 		return ResponseEntity.ok("User registered successfully!");
