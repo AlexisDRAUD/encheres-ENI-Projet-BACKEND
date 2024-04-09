@@ -5,6 +5,7 @@ import fr.eni.ecole.enchereseniprojetbackend.Security.LoginRequest;
 import fr.eni.ecole.enchereseniprojetbackend.Security.SignupRequest;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
 import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurRepository;
+import fr.eni.ecole.enchereseniprojetbackend.payload.response.JwtResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class AuthController {
 		
 		UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) authentication.getPrincipal();
 
-		return ResponseEntity.ok(jwt);
+		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUtilisateur().getId()));
 	}
 
 	@PostMapping("/signup")

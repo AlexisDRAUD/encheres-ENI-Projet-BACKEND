@@ -55,6 +55,10 @@ public class UtilisateurSpringSecurity implements UserDetails {
         return utilisateur.getPseudo();
     }
 
+    public String getEmail() {
+        return utilisateur.getEmail();
+    }
+
     /**
      * Spring Security doit pouvoir savoir si notre utilisateur a son compte non expiré
      * => on va metre "true" tout le temps
