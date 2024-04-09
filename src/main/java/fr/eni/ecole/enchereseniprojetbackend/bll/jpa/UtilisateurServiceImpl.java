@@ -1,7 +1,9 @@
 package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
+import fr.eni.ecole.enchereseniprojetbackend.dal.RetraitRepository;
 import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Autowired
     UtilisateurRepository ur;
+
+    @Autowired
+    RetraitRepository rr;
 
     @Override
     public List<Utilisateur> getUsers() {
@@ -38,11 +43,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public void addUser(Utilisateur utilisateur) {
         ur.save(utilisateur);
+        rr.save(utilisateur.getAdresse());
     }
 
     @Override
     public void updateUser(Utilisateur utilisateur) {
         ur.save(utilisateur);
+        rr.save(utilisateur.getAdresse());
     }
 
     @Override

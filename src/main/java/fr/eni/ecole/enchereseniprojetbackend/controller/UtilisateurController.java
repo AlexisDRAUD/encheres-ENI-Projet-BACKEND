@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @CrossOrigin
 public class UtilisateurController {
 
@@ -21,6 +21,11 @@ public class UtilisateurController {
     @GetMapping
     public List<Utilisateur> getUsers() {
         return us.getUsers();
+    }
+
+    @GetMapping("/{id}")
+    public Utilisateur getUserById(@PathVariable("id") Long id) {
+        return us.getUserById(id);
     }
 
     @PostMapping
