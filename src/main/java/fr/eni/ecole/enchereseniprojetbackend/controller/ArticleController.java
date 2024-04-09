@@ -2,6 +2,7 @@ package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -37,7 +38,7 @@ public class ArticleController {
     }
 
     @PostMapping("/add")
-    public String addArticle(Article article) {
+    public String addArticle(@RequestBody @Valid Article article) {
         as.creerArticle(article);
         return "redirect:/";
     }
