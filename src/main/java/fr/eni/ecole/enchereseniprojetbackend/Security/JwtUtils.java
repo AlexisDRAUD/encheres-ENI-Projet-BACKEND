@@ -25,7 +25,7 @@ public class JwtUtils {
         return JWT.create().withClaim("username", userPrincipal.getUsername()).sign(Algorithm.HMAC256(jwtSecret));
     }
     public String getUserNameFromJwtToken(String token) {
-        return JWT.require(Algorithm.HMAC256(jwtSecret)).build().verify(token).getClaim("pseudo").toString().replaceAll("\"", "");
+        return JWT.require(Algorithm.HMAC256(jwtSecret)).build().verify(token).getClaim("username").toString().replaceAll("\"", "");
     }
 
     public boolean validateJwtToken(String authToken) {

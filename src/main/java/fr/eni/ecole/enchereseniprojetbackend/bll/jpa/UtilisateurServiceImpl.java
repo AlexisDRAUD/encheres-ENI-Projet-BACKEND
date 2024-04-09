@@ -26,13 +26,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public Utilisateur recupererUtilisateurParPseudo(String pseudo) {
-        List<Utilisateur> utilisateurs = ur.findAll();
-        for (Utilisateur utilisateur : utilisateurs) {
-            if (utilisateur.getPseudo().equals(pseudo)) {
-                return utilisateur;
-            }
-        }
-        return  null;
+        return ur.findByPseudo(pseudo);
     }
 
     @Override

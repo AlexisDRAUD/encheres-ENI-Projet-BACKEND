@@ -9,7 +9,7 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
 
     Utilisateur findById(long id);
 
-    Optional<Utilisateur> findByPseudo(String pseudo);
+    Utilisateur findByPseudo(String pseudo);
 
     Boolean existsByPseudo(String pseudo);
 
