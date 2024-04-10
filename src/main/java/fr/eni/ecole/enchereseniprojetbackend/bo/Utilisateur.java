@@ -1,5 +1,6 @@
 package fr.eni.ecole.enchereseniprojetbackend.bo;
 
+import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -56,5 +57,28 @@ public class Utilisateur {
         this.password = password;
         this.credit = credit;
         this.administrateur = administrateur;
+    }
+
+    public Utilisateur(String pseudo, String prenom, String nom, String email, String telephone, Retrait adresse, String password) {
+        this.pseudo = pseudo;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.email = email;
+        this.telephone = telephone;
+        this.adresse = adresse;
+        this.password = password;
+    }
+
+    public UserFormRequest toUserForm() {
+        UserFormRequest userForm = new UserFormRequest();
+        userForm.setUsername(this.pseudo);
+        userForm.setNom(this.nom);
+        userForm.setPrenom(this.prenom);
+        userForm.setEmail(this.email);
+        userForm.setTelephone(this.telephone);
+        userForm.setRue(this.adresse.getRue());
+        userForm.setCodePostal(this.adresse.getCodePostal());
+        userForm.setVille(this.adresse.getVille());
+        return userForm;
     }
 }
