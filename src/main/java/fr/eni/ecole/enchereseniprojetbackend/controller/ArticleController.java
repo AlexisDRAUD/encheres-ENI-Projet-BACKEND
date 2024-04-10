@@ -37,8 +37,13 @@ public class ArticleController {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping(path = "/add")
     public String addArticle(@RequestBody @Valid Article article) {
+        //, @RequestPart("file") MultipartFile file) throws IOException
+//        byte[] bytes = file.getBytes();
+//        Path path = Paths.get("./img/" + file.getOriginalFilename());
+//        Files.write(path, bytes);
+//        article.setImage(String.valueOf(path));
         as.creerArticle(article);
         return "redirect:/";
     }
