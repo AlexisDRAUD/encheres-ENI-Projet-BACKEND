@@ -2,10 +2,8 @@ package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.Security.JwtUtils;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.payload.request.LoginRequest;
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.SignupRequest;
+import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
 import fr.eni.ecole.enchereseniprojetbackend.payload.response.JwtResponse;
 import jakarta.validation.Valid;
@@ -15,8 +13,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -27,9 +29,6 @@ public class AuthController {
 
 	@Autowired
 	UtilisateurService us;
-
-	@Autowired
-	PasswordEncoder encoder;
 
 	@Autowired
 	JwtUtils jwtUtils;
@@ -49,31 +48,47 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		if (us.usernameAlreadyExist(signUpRequest.getUsername())) {
-			return ResponseEntity
-					.badRequest()
-					.body("Error: Username is already taken!");
+	public ResponseEntity<?> registerUser(@Valid @RequestBody UserFormRequest userFormRequest, BindingResult br) {
+		Map<String, String> errors = new HashMap<>();
+
+		if (br.hasErrors()) {
+			for (FieldError error : br.getFieldErrors()) {
+				errors.put(error.getField(), error.getDefaultMessage());
+			}
+			return ResponseEntity.badRequest().body(errors);
 		}
 
-		if (us.emailAlreadyExist(signUpRequest.getEmail())) {
-			return ResponseEntity
-					.badRequest()
-					.body("Error: Email is already in use!");
+		if (us.usernameAlreadyExist(userFormRequest.getUsername())) {
+			errors.put("username", "Username is already taken!");
 		}
 
-		// Create new user's account
-		Utilisateur user = new Utilisateur(signUpRequest.getUsername(),
-				signUpRequest.getPrenom(),
-				signUpRequest.getNom(),
-				signUpRequest.getEmail(),
-							 signUpRequest.getTelephone(),
-							 new Retrait(signUpRequest.getRue(), signUpRequest.getCodePostal(),
-									 signUpRequest.getVille()),
-							 encoder.encode(signUpRequest.getPassword()),
-				500, false);
+		if (us.emailAlreadyExist(userFormRequest.getEmail())) {
+			errors.put("email", "Email is already in use!");
+		}
 
-		us.addUser(user);
+		if (userFormRequest.getPassword() != null) {
+			if (!userFormRequest.getPassword().isBlank()) {
+				if (userFormRequest.getPassword().length() < 6 || userFormRequest.getPassword().length() > 30) {
+					if (!us.isValidPassword(userFormRequest.getPassword(), userFormRequest.getPasswordConfirmation())) {
+						errors.put("password", "Passwords do not match!");
+					}
+				} else {
+					errors.put("password", "Le taille du mot de passe doit être compris entre 6 et 30!");
+				}
+			} else {
+				errors.put("password", "Le mot de passe ne doit pas être vide!");
+			}
+		} else {
+			errors.put("password", "Le mot de passe ne doit pas être nul!");
+		}
+
+		if (!errors.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(errors);
+		}
+
+		us.addUser(userFormRequest);
 
 		return ResponseEntity.ok("User registered successfully!");
 	}
