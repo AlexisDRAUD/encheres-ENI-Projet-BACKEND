@@ -5,6 +5,7 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Categorie;
 import fr.eni.ecole.enchereseniprojetbackend.dal.CategorieRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,8 +29,21 @@ public class CategorieServicesImpl implements CategorieService {
     }
 
     @Override
-    public void creerCategorie(Categorie Categorie) {
-        categorieRepository.save(Categorie);
+    public String creerCategorie(Categorie categorie) {
+        String result = "OK";
+        List<Categorie> categories = categorieRepository.findAll();
+        List<String> libelles = new ArrayList<>();
+        categories.forEach(cat -> libelles.add(cat.getLibelle().toLowerCase()));
+
+        //List<String> libelles = categories.stream().map(cat -> cat.getLibelle().toLowerCase());
+        System.out.println("CREER" + libelles);
+        if(!libelles.contains(categorie.getLibelle().toLowerCase())){
+            categorieRepository.save(categorie);
+            return result;
+        } else {
+            result = "Erreur";
+            return result;
+        }
     }
 
     @Override

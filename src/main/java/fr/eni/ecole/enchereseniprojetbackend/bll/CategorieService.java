@@ -9,7 +9,7 @@ public interface CategorieService {
     List<Categorie> consulterCategorie();
     Categorie consulterCategorieParId(long id);
 
-    void creerCategorie(Categorie Categorie);
+    String creerCategorie(Categorie categorie);
 
 
     void editCategorie(Categorie Categorie);

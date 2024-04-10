@@ -2,9 +2,12 @@ package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.CategorieService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Categorie;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -36,9 +39,13 @@ public class CategorieController {
     }
 
     @PostMapping("/add")
-    public String addCategorie(Categorie categorie) {
-        cs.creerCategorie(categorie);
-        return "redirect:/";
+    public void addCategorie(@RequestBody @Valid Categorie categorie) {
+        String reponse = cs.creerCategorie(categorie);
+        if(reponse.equals("OK")) {
+            new ResponseStatusException(HttpStatus.OK, "Catégorie ajoutée");
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cette catégorie existe déjà !");
+        }
     }
 
     @PostMapping("/delete/{id}")
