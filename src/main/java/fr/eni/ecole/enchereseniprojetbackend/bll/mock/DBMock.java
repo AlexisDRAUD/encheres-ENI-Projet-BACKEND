@@ -69,12 +69,15 @@ public class DBMock {
         ar.save(a2);
         ar.save(a3);
 
-        Enchere e1 = new Enchere(LocalDateTime.of(2024, 4, 8, 11, 0), 150, u1, a1);
+        Enchere e1 = new Enchere(LocalDateTime.of(2024, 4, 8, 11, 0), 150, u1, a2);
         Enchere e2 = new Enchere(LocalDateTime.of(2024, 4, 8, 11, 5), 160, u2, a1);
-        Enchere e3 = new Enchere(LocalDateTime.of(2024, 4, 8, 11, 10), 170, u1, a1);
+        Enchere e3 = new Enchere(LocalDateTime.of(2024, 4, 8, 11, 10), 170, u1, a2);
+        Enchere e4 = new Enchere(LocalDateTime.of(2024, 5, 8, 11, 10), 170, u1, a2);
+        ;
         er.save(e1);
         er.save(e2);
         er.save(e3);
+        er.save(e4);
 
     }
 
