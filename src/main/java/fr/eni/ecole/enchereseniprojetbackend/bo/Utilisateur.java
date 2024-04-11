@@ -22,7 +22,7 @@ public class Utilisateur {
     private long id;
 
     @NotBlank(message = "Le pseudo est obligatoire")
-    private String pseudo;
+    private String username;
 
     @NotBlank(message = "Le nom est obligatoire")
     private String nom;
@@ -48,8 +48,8 @@ public class Utilisateur {
     @NotNull
     private boolean administrateur;
 
-    public Utilisateur(String pseudo, String prenom, String nom, String email, String telephone, Retrait adresse, String password, long credit, boolean administrateur) {
-        this.pseudo = pseudo;
+    public Utilisateur(String username, String prenom, String nom, String email, String telephone, Retrait adresse, String password, long credit, boolean administrateur) {
+        this.username = username;
         this.prenom = prenom;
         this.nom = nom;
         this.email = email;
@@ -60,8 +60,8 @@ public class Utilisateur {
         this.administrateur = administrateur;
     }
 
-    public Utilisateur(String pseudo, String prenom, String nom, String email, String telephone, Retrait adresse, String password) {
-        this.pseudo = pseudo;
+    public Utilisateur(String username, String prenom, String nom, String email, String telephone, Retrait adresse, String password) {
+        this.username = username;
         this.prenom = prenom;
         this.nom = nom;
         this.email = email;
@@ -72,7 +72,7 @@ public class Utilisateur {
 
     public UserFormInput toUserForm() {
         UserFormInput userForm = new UserFormInput();
-        userForm.setUsername(this.pseudo);
+        userForm.setUsername(this.username);
         userForm.setNom(this.nom);
         userForm.setPrenom(this.prenom);
         userForm.setEmail(this.email);
@@ -86,7 +86,7 @@ public class Utilisateur {
     public UserPayload toUserPayload() {
         UserPayload userPayload = new UserPayload();
         userPayload.setId(this.id);
-        userPayload.setPseudo(this.pseudo);
+        userPayload.setUsername(this.username);
         userPayload.setNom(this.nom);
         userPayload.setPrenom(this.prenom);
         userPayload.setEmail(this.email);

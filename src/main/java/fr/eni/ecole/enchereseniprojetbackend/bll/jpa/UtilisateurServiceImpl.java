@@ -32,8 +32,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public Utilisateur getUserByPseudoOrEmail(String username) {
-        Utilisateur user = ur.findByPseudo(username);
+    public Utilisateur getUserByUsernameOrEmail(String username) {
+        Utilisateur user = ur.findByUsername(username);
         if (user == null) {
             user = ur.findByEmail(username);
         }
@@ -61,7 +61,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Map<String, String> errors = new HashMap<>();
 
         Utilisateur user = ur.findById(id);
-        user.setPseudo(userForm.getUsername());
+        user.setUsername(userForm.getUsername());
         user.setNom(userForm.getNom());
         user.setPrenom(userForm.getPrenom());
         user.setEmail(userForm.getEmail());
@@ -85,8 +85,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public boolean usernameAlreadyExist(String pseudo) {
-        return ur.existsByPseudo(pseudo);
+    public boolean usernameAlreadyExist(String username) {
+        return ur.existsByUsername(username);
     }
 
     @Override

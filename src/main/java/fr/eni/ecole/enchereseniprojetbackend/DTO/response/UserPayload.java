@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class UserPayload {
 
     private Long id;
-    private String pseudo;
+    private String username;
     private String nom;
     private String prenom;
     private String email;
