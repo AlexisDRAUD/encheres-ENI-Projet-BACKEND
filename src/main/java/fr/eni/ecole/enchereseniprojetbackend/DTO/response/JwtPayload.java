@@ -1,17 +1,24 @@
 package fr.eni.ecole.enchereseniprojetbackend.DTO.response;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 public class JwtPayload {
   private String token;
+
   @Getter
   @Setter
   private Long id;
 
-  public JwtPayload(String accessToken, Long id) {
+  @Getter
+  @Setter
+  private boolean admin;
+
+  public JwtPayload(String accessToken, Long id, boolean administrateur) {
     this.token = accessToken;
     this.id = id;
+    this.admin = administrateur;
   }
 
   public String getAccessToken() {
