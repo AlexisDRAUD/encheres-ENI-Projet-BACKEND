@@ -84,8 +84,8 @@ public class Article {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
+    public long getId() {
+        return (int) id;
     }
 
     public EtatVente getEtatVente() {

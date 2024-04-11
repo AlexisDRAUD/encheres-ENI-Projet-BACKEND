@@ -9,6 +9,8 @@ public interface EncheresService {
 
     List<Enchere> consulterEncherebyarticleID(int id);
 
+    Enchere getHighestEnchereForArticle(long id);
+
     void creerEnchere(Enchere enchere);
 
 
