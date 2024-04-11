@@ -72,9 +72,9 @@ public class UserFormInput {
     @Getter
     @Setter
     @NotNull
-    @Positive
-    @Max(99999)
-    private Integer codePostal;
+    @NotBlank
+    @Size(max = 5)
+    private String codePostal;
 
     public Utilisateur toUtilisateur() {
         return new Utilisateur(
@@ -83,7 +83,9 @@ public class UserFormInput {
                 this.nom,
                 this.email,
                 this.telephone,
-                new Retrait(this.rue, this.codePostal, this.ville),
+                this.rue,
+                this.codePostal,
+                this.ville,
                 this.password
         );
     }

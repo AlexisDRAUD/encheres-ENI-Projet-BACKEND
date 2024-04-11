@@ -23,13 +23,13 @@ public class Retrait {
     @NotBlank(message = "La rue est obligatoire")
     private String rue;
 
-    @PositiveOrZero
-    private Integer codePostal;
+    @NotBlank(message = "Le code postal est obligatoire")
+    private String codePostal;
 
     @NotBlank(message = "La ville est obligatoire")
     private String ville;
 
-    public Retrait(String rue, Integer codePostal, String ville) {
+    public Retrait(String rue, String codePostal, String ville) {
         this.rue = rue;
         this.codePostal = codePostal;
         this.ville = ville;

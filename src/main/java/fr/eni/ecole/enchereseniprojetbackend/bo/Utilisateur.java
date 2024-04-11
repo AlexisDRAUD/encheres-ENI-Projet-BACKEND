@@ -35,8 +35,14 @@ public class Utilisateur {
 
     private String telephone;
 
-    @OneToOne
-    private Retrait adresse;
+    @NotBlank(message = "La rue est obligatoire")
+    private String rue;
+
+    @NotBlank(message = "Le code postal est obligatoire")
+    private String codePostal;
+
+    @NotBlank(message = "La ville est obligatoire")
+    private String ville;
 
     @NotNull
     @NotBlank(message = "Le mot de passe est obligatoire")
@@ -48,25 +54,29 @@ public class Utilisateur {
     @NotNull
     private boolean administrateur;
 
-    public Utilisateur(String username, String prenom, String nom, String email, String telephone, Retrait adresse, String password, long credit, boolean administrateur) {
+    public Utilisateur(String username, String prenom, String nom, String email, String telephone, String rue, String codePostal, String ville, String password, long credit, boolean administrateur) {
         this.username = username;
         this.prenom = prenom;
         this.nom = nom;
         this.email = email;
         this.telephone = telephone;
-        this.adresse = adresse;
+        this.rue = rue;
+        this.codePostal = codePostal;
+        this.ville = ville;
         this.password = password;
         this.credit = credit;
         this.administrateur = administrateur;
     }
 
-    public Utilisateur(String username, String prenom, String nom, String email, String telephone, Retrait adresse, String password) {
+    public Utilisateur(String username, String prenom, String nom, String email, String telephone, String rue, String codePostal, String ville, String password) {
         this.username = username;
         this.prenom = prenom;
         this.nom = nom;
         this.email = email;
         this.telephone = telephone;
-        this.adresse = adresse;
+        this.rue = rue;
+        this.codePostal = codePostal;
+        this.ville = ville;
         this.password = password;
     }
 
@@ -77,9 +87,9 @@ public class Utilisateur {
         userForm.setPrenom(this.prenom);
         userForm.setEmail(this.email);
         userForm.setTelephone(this.telephone);
-        userForm.setRue(this.adresse.getRue());
-        userForm.setCodePostal(this.adresse.getCodePostal());
-        userForm.setVille(this.adresse.getVille());
+        userForm.setRue(this.getRue());
+        userForm.setCodePostal(this.getCodePostal());
+        userForm.setVille(this.getVille());
         return userForm;
     }
 
@@ -91,9 +101,9 @@ public class Utilisateur {
         userPayload.setPrenom(this.prenom);
         userPayload.setEmail(this.email);
         userPayload.setTelephone(this.telephone);
-        userPayload.setRue(this.adresse.getRue());
-        userPayload.setCodePostal(this.adresse.getCodePostal());
-        userPayload.setVille(this.adresse.getVille());
+        userPayload.setRue(this.getRue());
+        userPayload.setCodePostal(this.getCodePostal());
+        userPayload.setVille(this.getVille());
         userPayload.setCredit(this.credit);
         return userPayload;
     }

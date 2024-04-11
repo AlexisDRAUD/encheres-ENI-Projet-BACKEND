@@ -16,7 +16,7 @@ public class UserPayload {
     private String email;
     private String telephone;
     private String rue;
-    private Integer codePostal;
+    private String codePostal;
     private String ville;
     private Long credit;
 

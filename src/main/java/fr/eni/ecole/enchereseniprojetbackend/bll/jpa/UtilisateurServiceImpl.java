@@ -52,7 +52,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         user.setAdministrateur(false);
         user.setPassword(encoder.encode(user.getPassword()));
 
-        rr.save(user.getAdresse());
         ur.save(user);
     }
 
@@ -69,13 +68,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         if (userForm.getPassword() != null && !userForm.getPassword().isBlank()) {
             user.setPassword(encoder.encode(userForm.getPassword()));
         }
-        Retrait addresse = user.getAdresse();
-        addresse.setRue(userForm.getRue());
-        addresse.setVille(userForm.getVille());
-        addresse.setCodePostal(userForm.getCodePostal());
-        user.setAdresse(addresse);
+        user.setRue(userForm.getRue());
+        user.setVille(userForm.getVille());
+        user.setCodePostal(userForm.getCodePostal());
 
-        rr.save(user.getAdresse());
         ur.save(user);
     }
 
