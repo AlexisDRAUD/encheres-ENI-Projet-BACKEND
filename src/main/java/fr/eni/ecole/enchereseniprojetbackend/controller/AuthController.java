@@ -44,7 +44,7 @@ public class AuthController {
 		
 		UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) authentication.getPrincipal();
 
-		return ResponseEntity.ok(new JwtPayload(jwt, userDetails.getUtilisateur().getId()));
+		return ResponseEntity.ok(new JwtPayload(jwt, userDetails.getUtilisateur().getId(), userDetails.getUtilisateur().isAdministrateur() ));
 	}
 
 	@PostMapping("/signup")
