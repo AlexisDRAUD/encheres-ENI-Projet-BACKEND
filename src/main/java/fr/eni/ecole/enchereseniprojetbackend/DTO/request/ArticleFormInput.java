@@ -42,8 +42,8 @@ public class ArticleFormInput {
     private String rue;
 
     @NotNull
-    @PositiveOrZero
-    private Integer codePostal;
+    @NotBlank(message = "Le code postal est obligatoire")
+    private String codePostal;
 
     @NotNull
     @NotBlank(message = "La ville est obligatoire")

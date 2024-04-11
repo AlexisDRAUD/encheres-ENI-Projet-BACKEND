@@ -32,8 +32,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public Utilisateur getUserByPseudoOrEmail(String username) {
-        Utilisateur user = ur.findByPseudo(username);
+    public Utilisateur getUserByUsernameOrEmail(String username) {
+        Utilisateur user = ur.findByUsername(username);
         if (user == null) {
             user = ur.findByEmail(username);
         }
@@ -52,7 +52,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         user.setAdministrateur(false);
         user.setPassword(encoder.encode(user.getPassword()));
 
-        rr.save(user.getAdresse());
         ur.save(user);
     }
 
@@ -61,7 +60,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Map<String, String> errors = new HashMap<>();
 
         Utilisateur user = ur.findById(id);
-        user.setPseudo(userForm.getUsername());
+        user.setUsername(userForm.getUsername());
         user.setNom(userForm.getNom());
         user.setPrenom(userForm.getPrenom());
         user.setEmail(userForm.getEmail());
@@ -69,13 +68,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         if (userForm.getPassword() != null && !userForm.getPassword().isBlank()) {
             user.setPassword(encoder.encode(userForm.getPassword()));
         }
-        Retrait addresse = user.getAdresse();
-        addresse.setRue(userForm.getRue());
-        addresse.setVille(userForm.getVille());
-        addresse.setCodePostal(userForm.getCodePostal());
-        user.setAdresse(addresse);
+        user.setRue(userForm.getRue());
+        user.setVille(userForm.getVille());
+        user.setCodePostal(userForm.getCodePostal());
 
-        rr.save(user.getAdresse());
         ur.save(user);
     }
 
@@ -85,8 +81,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public boolean usernameAlreadyExist(String pseudo) {
-        return ur.existsByPseudo(pseudo);
+    public boolean usernameAlreadyExist(String username) {
+        return ur.existsByUsername(username);
     }
 
     @Override

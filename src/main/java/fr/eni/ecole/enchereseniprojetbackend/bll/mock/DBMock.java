@@ -36,9 +36,9 @@ public class DBMock {
         cr.deleteAll();
 
 
-        Retrait adresse1 = new Retrait("rue du test1", 79000, "Niort");
-        Retrait adresse2 = new Retrait("rue du test2", 44000, "Nantes");
-        Retrait adresse3 = new Retrait("rue du test3", 75000, "Paris");
+        Retrait adresse1 = new Retrait("rue du test1", "79000", "Niort");
+        Retrait adresse2 = new Retrait("rue du test2", "44000", "Nantes");
+        Retrait adresse3 = new Retrait("rue du test3", "75000", "Paris");
         rr.save(adresse1);
         rr.save(adresse2);
         rr.save(adresse3);
@@ -52,9 +52,11 @@ public class DBMock {
         cr.save(cat3);
         cr.save(cat4);
 
-        Utilisateur u1 = new Utilisateur("admin","admin", "admin", "admin@test.com", "0102030405", adresse1, encoder.encode("password"), 500, true);
-        Utilisateur u2 = new Utilisateur("user1","user1", "user1", "user1@test.com", "0102030405", adresse2, encoder.encode("password"), 500, false);
-        Utilisateur u3 = new Utilisateur("user2","user2", "user2", "user2@test.com", "0102030405", adresse3, encoder.encode("password"), 500, false);
+        Utilisateur u1 = new Utilisateur("admin","admin", "admin", "admin@test.com", "0102030405", "rue du test1", "79000", "Niort", encoder.encode("password"), 500, true);
+        Utilisateur u2 = new Utilisateur("user1","user1", "user1", "user1@test.com", "0102030405", "rue du test2",
+                "79000", "Niort", encoder.encode("password"), 500, false);
+        Utilisateur u3 = new Utilisateur("user2","user2", "user2", "user2@test.com", "0102030405", "rue du test3",
+                "79000", "Niort", encoder.encode("password"), 500, false);
         ur.save(u1);
         ur.save(u2);
         ur.save(u3);

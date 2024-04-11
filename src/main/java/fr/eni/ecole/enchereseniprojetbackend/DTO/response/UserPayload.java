@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 public class UserPayload {
 
     private Long id;
-    private String pseudo;
+    private String username;
     private String nom;
     private String prenom;
     private String email;
     private String telephone;
     private String rue;
-    private Integer codePostal;
+    private String codePostal;
     private String ville;
     private Long credit;
 

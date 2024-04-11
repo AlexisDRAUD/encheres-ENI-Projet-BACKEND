@@ -68,7 +68,7 @@ public class AuthController {
 
 		if (userFormInput.getPassword() != null) {
 			if (!userFormInput.getPassword().isBlank()) {
-				if (userFormInput.getPassword().length() < 6 || userFormInput.getPassword().length() > 30) {
+				if (userFormInput.getPassword().length() > 6 && userFormInput.getPassword().length() < 30) {
 					if (!us.isValidPassword(userFormInput.getPassword(), userFormInput.getPasswordConfirmation())) {
 						errors.put("password", "Passwords do not match!");
 					}

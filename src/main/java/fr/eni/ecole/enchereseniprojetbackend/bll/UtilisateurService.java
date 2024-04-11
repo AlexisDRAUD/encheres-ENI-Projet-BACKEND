@@ -8,7 +8,7 @@ public interface UtilisateurService {
 
     List<Utilisateur> getUsers();
 
-    Utilisateur getUserByPseudoOrEmail(String username);
+    Utilisateur getUserByUsernameOrEmail(String username);
 
     Utilisateur getUserById(long id);
 
@@ -18,7 +18,7 @@ public interface UtilisateurService {
 
     void deleteUserById(long id);
 
-    boolean usernameAlreadyExist(String pseudo);
+    boolean usernameAlreadyExist(String username);
 
     boolean emailAlreadyExist(String email);
 
