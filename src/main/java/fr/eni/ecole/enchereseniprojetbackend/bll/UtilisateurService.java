@@ -2,7 +2,7 @@ package fr.eni.ecole.enchereseniprojetbackend.bll;
 
 import java.util.List;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormRequest;
 
 public interface UtilisateurService {
 

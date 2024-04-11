@@ -1,6 +1,6 @@
 package fr.eni.ecole.enchereseniprojetbackend.bo;
 
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

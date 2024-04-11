@@ -1,9 +1,7 @@
-package fr.eni.ecole.enchereseniprojetbackend.payload.response;
+package fr.eni.ecole.enchereseniprojetbackend.DTO.response;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 public class JwtResponse {
   private String token;

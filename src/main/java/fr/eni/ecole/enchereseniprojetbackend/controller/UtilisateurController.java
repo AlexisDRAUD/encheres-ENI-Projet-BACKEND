@@ -4,7 +4,8 @@ import fr.eni.ecole.enchereseniprojetbackend.Security.JwtUtils;
 import fr.eni.ecole.enchereseniprojetbackend.Security.MyUserDetailsService;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,11 +35,11 @@ public class UtilisateurController {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-/*
-    @GetMapping
-    public List<Utilisateur> getUsers() {
-        return us.getUsers();
-    }*/
+
+    @PostMapping("/test")
+    public void testUserConverter(@RequestBody Utilisateur user, BindingResult br) {
+        System.out.println(user);
+    }
 
     @GetMapping("/{id}")
     public UserFormRequest getUserById(@PathVariable("id") Long id) {

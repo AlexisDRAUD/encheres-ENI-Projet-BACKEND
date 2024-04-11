@@ -1,4 +1,4 @@
-package fr.eni.ecole.enchereseniprojetbackend.payload.request;
+package fr.eni.ecole.enchereseniprojetbackend.DTO.request;
 
 import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;

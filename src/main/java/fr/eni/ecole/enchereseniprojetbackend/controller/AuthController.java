@@ -2,10 +2,10 @@ package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.Security.JwtUtils;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.LoginRequest;
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.LoginRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormRequest;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
-import fr.eni.ecole.enchereseniprojetbackend.payload.response.JwtResponse;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.response.JwtResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
