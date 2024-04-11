@@ -3,6 +3,8 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.dal.ArticleRepository;
+import fr.eni.ecole.enchereseniprojetbackend.dal.RetraitRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -11,9 +13,11 @@ import java.util.List;
 public class ArticlesServicesImpl implements ArticlesService {
 
     final ArticleRepository articleRepository;
+    final RetraitRepository rr;
 
-    public ArticlesServicesImpl(ArticleRepository articleRepository) {
+    public ArticlesServicesImpl(ArticleRepository articleRepository, RetraitRepository rr) {
         this.articleRepository = articleRepository;
+        this.rr = rr;
     }
 
     @Override
@@ -28,6 +32,7 @@ public class ArticlesServicesImpl implements ArticlesService {
 
     @Override
     public void creerArticle(Article article) {
+        rr.save(article.getRetrait());
         articleRepository.save(article);
     }
 
