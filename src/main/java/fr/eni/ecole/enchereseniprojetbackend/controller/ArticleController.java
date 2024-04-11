@@ -2,6 +2,7 @@ package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.ArticleFormInput;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.SearchFilterInput;
+import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.CategorieService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
@@ -10,6 +11,7 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +43,14 @@ public class ArticleController {
 
     @PostMapping
     public List<Article> listarticle(@RequestBody @Valid SearchFilterInput searchFilter) {
+
+        UtilisateurSpringSecurity userDetails =
+                (UtilisateurSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (searchFilter.getUserId() != null && userDetails.getUtilisateur().getId() == searchFilter.getUserId()) {
+
+        }
+
         return as.getArticlesBySearchFilter(searchFilter);
     }
 

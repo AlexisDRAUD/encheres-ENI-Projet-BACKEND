@@ -26,11 +26,11 @@ public class ArticlesServicesImpl implements ArticlesService {
 
     @Override
     public List<Article> getArticlesBySearchFilter(SearchFilterInput searchFilter) {
-        String userId = (searchFilter.getUserId() == null)
+        String userId = (searchFilter.getUserId() == 0)
                 ? null : searchFilter.getUserId().toString();
         String search = (searchFilter.getSearch() == null || searchFilter.getSearch().isBlank())
                 ? null : searchFilter.getSearch();
-        String categorieId = (searchFilter.getCategorieId() == null)
+        String categorieId = (searchFilter.getCategorieId() == 0)
                 ? null : searchFilter.getCategorieId().toString();
 
         return articleRepository.findArticlesByFilter(
