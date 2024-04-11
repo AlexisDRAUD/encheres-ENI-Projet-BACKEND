@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/enchere")
@@ -38,7 +40,7 @@ public class EnchereController {
         if (liste != null && !liste.isEmpty()) {
             return ResponseEntity.ok(liste);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(liste);
         }
     }
     @GetMapping("/article/{id}")
@@ -47,15 +49,27 @@ public class EnchereController {
         if (liste != null && !liste.isEmpty()) {
             return ResponseEntity.ok(liste);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(liste);
         }
     }
 
     @PostMapping(path = "/add")
-    public String addEnchere(@RequestBody @Valid EnchereFormInput enchereForm) {
-        es.creerEnchere(toEnchere(enchereForm));
-        return "redirect:/";
+    public ResponseEntity<?> addEnchere(@RequestBody @Valid EnchereFormInput enchereForm) {
+        Enchere enchere = toEnchere(enchereForm);
+        Map<String, String> errors = new HashMap<>();
+        if (enchere.getArticle().getVendeur().equals(enchere.getUtilisateur())){
+            errors.put("username", "L'utilisateur ne peut pas enchérir sur son propre article!");
+        }
+        if (!errors.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(errors);
+        } else {
+            es.creerEnchere(enchere);
+            return ResponseEntity.ok("Enchère créée avec succès");
+        }
     }
+
 
     public Enchere toEnchere(EnchereFormInput enchereForm) {
         return new Enchere(

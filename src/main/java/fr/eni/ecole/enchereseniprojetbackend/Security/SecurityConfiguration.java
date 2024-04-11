@@ -67,8 +67,8 @@ public class SecurityConfiguration {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/**","/article","/categorie").permitAll()
-                                .requestMatchers("/**").authenticated()
+                        auth.requestMatchers("/auth/**","/article","/article/detail/**","/categorie", "/enchere/article/**").permitAll()
+                                .requestMatchers("/**", "/enchere/**","/enchere/add/**", "/user/**").authenticated()
                                 .anyRequest().authenticated()
                 );
 

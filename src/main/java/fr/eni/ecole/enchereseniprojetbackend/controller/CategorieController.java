@@ -36,13 +36,13 @@ public class CategorieController {
     }
 
     @PostMapping("/add")
-    public String addCategorie(Categorie categorie) {
+    public String addCategorie(@RequestBody Categorie categorie) {
         cs.creerCategorie(categorie);
         return "redirect:/";
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteCategorie(@PathVariable Long id) {
+    public String deleteCategorie(@RequestBody @PathVariable Long id) {
         cs.supprimerCategorie(id);
         return "redirect:/";
     }
