@@ -1,4 +1,4 @@
-package fr.eni.ecole.enchereseniprojetbackend.payload.request;
+package fr.eni.ecole.enchereseniprojetbackend.DTO.request;
 
 import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-public class UserFormRequest {
+public class UserFormInput {
     @Getter
     @Setter
     @NotNull

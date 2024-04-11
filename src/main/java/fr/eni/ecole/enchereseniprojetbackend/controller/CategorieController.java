@@ -49,7 +49,7 @@ public class CategorieController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteCategorie(@PathVariable Long id) {
+    public String deleteCategorie(@RequestBody @PathVariable Long id) {
         cs.supprimerCategorie(id);
         return "redirect:/";
     }

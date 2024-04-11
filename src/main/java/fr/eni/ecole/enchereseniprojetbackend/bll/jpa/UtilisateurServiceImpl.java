@@ -5,7 +5,7 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.dal.RetraitRepository;
 import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurRepository;
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public void addUser(UserFormRequest userForm) {
+    public void addUser(UserFormInput userForm) {
         Utilisateur user = userForm.toUtilisateur();
         user.setCredit(500);
         user.setAdministrateur(false);
@@ -57,7 +57,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public void updateUser(UserFormRequest userForm, long id) {
+    public void updateUser(UserFormInput userForm, long id) {
         Map<String, String> errors = new HashMap<>();
 
         Utilisateur user = ur.findById(id);

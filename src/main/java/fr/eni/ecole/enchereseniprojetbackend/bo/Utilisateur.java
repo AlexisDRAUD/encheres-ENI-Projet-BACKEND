@@ -1,6 +1,7 @@
 package fr.eni.ecole.enchereseniprojetbackend.bo;
 
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.response.UserPayload;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -69,8 +70,8 @@ public class Utilisateur {
         this.password = password;
     }
 
-    public UserFormRequest toUserForm() {
-        UserFormRequest userForm = new UserFormRequest();
+    public UserFormInput toUserForm() {
+        UserFormInput userForm = new UserFormInput();
         userForm.setUsername(this.pseudo);
         userForm.setNom(this.nom);
         userForm.setPrenom(this.prenom);
@@ -80,5 +81,20 @@ public class Utilisateur {
         userForm.setCodePostal(this.adresse.getCodePostal());
         userForm.setVille(this.adresse.getVille());
         return userForm;
+    }
+
+    public UserPayload toUserPayload() {
+        UserPayload userPayload = new UserPayload();
+        userPayload.setId(this.id);
+        userPayload.setPseudo(this.pseudo);
+        userPayload.setNom(this.nom);
+        userPayload.setPrenom(this.prenom);
+        userPayload.setEmail(this.email);
+        userPayload.setTelephone(this.telephone);
+        userPayload.setRue(this.adresse.getRue());
+        userPayload.setCodePostal(this.adresse.getCodePostal());
+        userPayload.setVille(this.adresse.getVille());
+        userPayload.setCredit(this.credit);
+        return userPayload;
     }
 }

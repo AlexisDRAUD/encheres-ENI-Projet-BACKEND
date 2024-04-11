@@ -1,10 +1,11 @@
 package fr.eni.ecole.enchereseniprojetbackend.controller;
 
+import fr.eni.ecole.enchereseniprojetbackend.DTO.response.UserPayload;
 import fr.eni.ecole.enchereseniprojetbackend.Security.JwtUtils;
 import fr.eni.ecole.enchereseniprojetbackend.Security.MyUserDetailsService;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.payload.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,28 +35,23 @@ public class UtilisateurController {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-/*
-    @GetMapping
-    public List<Utilisateur> getUsers() {
-        return us.getUsers();
-    }*/
 
     @GetMapping("/{id}")
-    public UserFormRequest getUserById(@PathVariable("id") Long id) {
+    public UserPayload getUserById(@PathVariable("id") Long id) {
         UtilisateurSpringSecurity userDetails =
                 (UtilisateurSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (userDetails.getUtilisateur().getId() == id)
         {
-            return us.getUserById(id).toUserForm();
+            return us.getUserById(id).toUserPayload();
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous n'avez pas accès a cet utilisateur !");
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> putUser(@RequestBody @Valid UserFormRequest userForm, BindingResult br,
-                           @PathVariable("id") Long id) {
+    public ResponseEntity<?> putUser(@RequestBody @Valid UserFormInput userForm, BindingResult br,
+                                     @PathVariable("id") Long id) {
         Map<String, String> errors = new HashMap<>();
 
         UtilisateurSpringSecurity userDetails =
