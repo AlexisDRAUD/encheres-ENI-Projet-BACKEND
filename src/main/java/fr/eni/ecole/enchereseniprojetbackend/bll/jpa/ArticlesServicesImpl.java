@@ -2,6 +2,7 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
+import fr.eni.ecole.enchereseniprojetbackend.bo.EtatVente;
 import fr.eni.ecole.enchereseniprojetbackend.dal.ArticleRepository;
 import fr.eni.ecole.enchereseniprojetbackend.dal.RetraitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,11 @@ public class ArticlesServicesImpl implements ArticlesService {
 
     @Override
     public List<Article> consulterArticle() {
-        return articleRepository.findAll();
+        List<Article> articles = articleRepository.findAll();
+        for (Article article : articles) {
+            EtatVente etatVente = article.getEtatVente();
+        }
+        return articles;
     }
 
     @Override

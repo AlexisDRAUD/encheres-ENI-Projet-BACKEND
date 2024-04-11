@@ -55,15 +55,21 @@ public class EnchereController {
 
     @PostMapping(path = "/add")
     public ResponseEntity<?> addEnchere(@RequestBody @Valid EnchereFormInput enchereForm) {
-        Enchere enchere = toEnchere(enchereForm);
+        Enchere enchere = toEnchere(enchereForm); // Supposons que cette méthode convertit le form en objet Enchere
         Map<String, String> errors = new HashMap<>();
+
         if (enchere.getArticle().getVendeur().equals(enchere.getUtilisateur())){
-            errors.put("username", "L'utilisateur ne peut pas enchérir sur son propre article!");
+            errors.put("user", "L'utilisateur ne peut pas enchérir sur son propre article!");
         }
+
+        // Récupère l'enchère la plus haute pour cet article
+        Enchere highestEnchere = es.getHighestEnchereForArticle(enchere.getArticle().getId());
+        if (highestEnchere != null && enchere.getMontantEnchere() < highestEnchere.getMontantEnchere()) {
+            errors.put("montant", "Le montant de l'enchère doit être supérieur au montant actuel le plus élevé.");
+        }
+
         if (!errors.isEmpty()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(errors);
+            return ResponseEntity.badRequest().body(errors);
         } else {
             es.creerEnchere(enchere);
             return ResponseEntity.ok("Enchère créée avec succès");
@@ -74,7 +80,7 @@ public class EnchereController {
     public Enchere toEnchere(EnchereFormInput enchereForm) {
         return new Enchere(
                 enchereForm.getDateEnchere(),
-                enchereForm.getMontantEnchere(),
+                (int) enchereForm.getMontantEnchere(),
                 us.getUserById(enchereForm.getUserId()),
                 as.consulterArticleParId(enchereForm.getArticleId())
         );
