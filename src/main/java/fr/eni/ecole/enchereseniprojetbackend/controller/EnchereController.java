@@ -1,6 +1,9 @@
 package fr.eni.ecole.enchereseniprojetbackend.controller;
 
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.EnchereFormInput;
+import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.EncheresService;
+import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +20,16 @@ public class EnchereController {
     @Autowired
     private final EncheresService es;
 
-    public EnchereController(EncheresService es) {
+    @Autowired
+    private final ArticlesService as;
+
+    @Autowired
+    private final UtilisateurService us;
+
+    public EnchereController(EncheresService es, ArticlesService as, UtilisateurService us) {
         this.es = es;
+        this.as = as;
+        this.us = us;
     }
 
     @GetMapping("/user/{id}")
@@ -41,9 +52,17 @@ public class EnchereController {
     }
 
     @PostMapping(path = "/add")
-    public String addEnchere(@RequestBody @Valid Enchere enchere) {
-        es.creerEnchere(enchere);
+    public String addEnchere(@RequestBody @Valid EnchereFormInput enchereForm) {
+        es.creerEnchere(toEnchere(enchereForm));
         return "redirect:/";
     }
 
+    public Enchere toEnchere(EnchereFormInput enchereForm) {
+        return new Enchere(
+                enchereForm.getDateEnchere(),
+                enchereForm.getMontantEnchere(),
+                us.getUserById(enchereForm.getUserId()),
+                as.consulterArticleParId(enchereForm.getArticleId())
+        );
+    }
 }

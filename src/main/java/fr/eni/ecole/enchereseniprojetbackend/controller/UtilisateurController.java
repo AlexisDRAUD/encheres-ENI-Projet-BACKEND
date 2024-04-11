@@ -1,11 +1,11 @@
 package fr.eni.ecole.enchereseniprojetbackend.controller;
 
+import fr.eni.ecole.enchereseniprojetbackend.DTO.response.UserPayload;
 import fr.eni.ecole.enchereseniprojetbackend.Security.JwtUtils;
 import fr.eni.ecole.enchereseniprojetbackend.Security.MyUserDetailsService;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
-import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,27 +36,22 @@ public class UtilisateurController {
     private MyUserDetailsService userDetailsService;
 
 
-    @PostMapping("/test")
-    public void testUserConverter(@RequestBody Utilisateur user, BindingResult br) {
-        System.out.println(user);
-    }
-
     @GetMapping("/{id}")
-    public UserFormRequest getUserById(@PathVariable("id") Long id) {
+    public UserPayload getUserById(@PathVariable("id") Long id) {
         UtilisateurSpringSecurity userDetails =
                 (UtilisateurSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (userDetails.getUtilisateur().getId() == id)
         {
-            return us.getUserById(id).toUserForm();
+            return us.getUserById(id).toUserPayload();
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous n'avez pas accès a cet utilisateur !");
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> putUser(@RequestBody @Valid UserFormRequest userForm, BindingResult br,
-                           @PathVariable("id") Long id) {
+    public ResponseEntity<?> putUser(@RequestBody @Valid UserFormInput userForm, BindingResult br,
+                                     @PathVariable("id") Long id) {
         Map<String, String> errors = new HashMap<>();
 
         UtilisateurSpringSecurity userDetails =

@@ -2,7 +2,7 @@ package fr.eni.ecole.enchereseniprojetbackend.bll;
 
 import java.util.List;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
-import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
 
 public interface UtilisateurService {
 
@@ -12,9 +12,9 @@ public interface UtilisateurService {
 
     Utilisateur getUserById(long id);
 
-    void addUser(UserFormRequest userForm);
+    void addUser(UserFormInput userForm);
 
-    void updateUser(UserFormRequest userForm, long id);
+    void updateUser(UserFormInput userForm, long id);
 
     void deleteUserById(long id);
 

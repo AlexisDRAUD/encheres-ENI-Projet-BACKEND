@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-public class UserFormRequest {
+public class UserFormInput {
     @Getter
     @Setter
     @NotNull

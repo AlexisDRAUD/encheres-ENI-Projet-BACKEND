@@ -2,10 +2,10 @@ package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.Security.JwtUtils;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.DTO.request.LoginRequest;
-import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormRequest;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.LoginInput;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
-import fr.eni.ecole.enchereseniprojetbackend.DTO.response.JwtResponse;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.response.JwtPayload;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,21 +34,21 @@ public class AuthController {
 	JwtUtils jwtUtils;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginInput loginInput) {
 
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+				new UsernamePasswordAuthenticationToken(loginInput.getUsername(), loginInput.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		
 		UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) authentication.getPrincipal();
 
-		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUtilisateur().getId()));
+		return ResponseEntity.ok(new JwtPayload(jwt, userDetails.getUtilisateur().getId()));
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody UserFormRequest userFormRequest, BindingResult br) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody UserFormInput userFormInput, BindingResult br) {
 		Map<String, String> errors = new HashMap<>();
 
 		if (br.hasErrors()) {
@@ -58,18 +58,18 @@ public class AuthController {
 			return ResponseEntity.badRequest().body(errors);
 		}
 
-		if (us.usernameAlreadyExist(userFormRequest.getUsername())) {
+		if (us.usernameAlreadyExist(userFormInput.getUsername())) {
 			errors.put("username", "Username is already taken!");
 		}
 
-		if (us.emailAlreadyExist(userFormRequest.getEmail())) {
+		if (us.emailAlreadyExist(userFormInput.getEmail())) {
 			errors.put("email", "Email is already in use!");
 		}
 
-		if (userFormRequest.getPassword() != null) {
-			if (!userFormRequest.getPassword().isBlank()) {
-				if (userFormRequest.getPassword().length() < 6 || userFormRequest.getPassword().length() > 30) {
-					if (!us.isValidPassword(userFormRequest.getPassword(), userFormRequest.getPasswordConfirmation())) {
+		if (userFormInput.getPassword() != null) {
+			if (!userFormInput.getPassword().isBlank()) {
+				if (userFormInput.getPassword().length() < 6 || userFormInput.getPassword().length() > 30) {
+					if (!us.isValidPassword(userFormInput.getPassword(), userFormInput.getPasswordConfirmation())) {
 						errors.put("password", "Passwords do not match!");
 					}
 				} else {
@@ -88,7 +88,7 @@ public class AuthController {
 					.body(errors);
 		}
 
-		us.addUser(userFormRequest);
+		us.addUser(userFormInput);
 
 		return ResponseEntity.ok("User registered successfully!");
 	}
