@@ -1,18 +1,15 @@
 package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.ArticleFormInput;
-import fr.eni.ecole.enchereseniprojetbackend.DTO.request.EnchereFormInput;
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.SearchFilterInput;
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.CategorieService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Categorie;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +37,11 @@ public class ArticleController {
     @GetMapping
     public List<Article> listarticle() {
         return as.consulterArticle();
+    }
+
+    @PostMapping
+    public List<Article> listarticle(@RequestBody @Valid SearchFilterInput searchFilter) {
+        return as.getArticlesBySearchFilter(searchFilter);
     }
 
     @GetMapping("/detail/{id}")

@@ -1,5 +1,6 @@
 package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.SearchFilterInput;
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.EtatVente;
@@ -8,6 +9,8 @@ import fr.eni.ecole.enchereseniprojetbackend.dal.RetraitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 @Service
@@ -19,6 +22,21 @@ public class ArticlesServicesImpl implements ArticlesService {
     public ArticlesServicesImpl(ArticleRepository articleRepository, RetraitRepository rr) {
         this.articleRepository = articleRepository;
         this.rr = rr;
+    }
+
+    @Override
+    public List<Article> getArticlesBySearchFilter(SearchFilterInput searchFilter) {
+        String userId = (searchFilter.getUserId() == null)
+                ? null : searchFilter.getUserId().toString();
+        String search = (searchFilter.getSearch() == null || searchFilter.getSearch().isBlank())
+                ? null : searchFilter.getSearch();
+        String categorieId = (searchFilter.getCategorieId() == null)
+                ? null : searchFilter.getCategorieId().toString();
+
+        return articleRepository.findArticlesByFilter(
+                userId, search, categorieId,
+                LocalDateTime.now(), searchFilter.isOpenBids(), searchFilter.isOngoingBids(), searchFilter.isWonBids(),
+                searchFilter.isOngoingSales(), searchFilter.isNotStartedSales(), searchFilter.isCompletedSales());
     }
 
     @Override
