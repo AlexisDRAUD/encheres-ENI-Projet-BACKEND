@@ -59,6 +59,16 @@ public class EnchereController {
     public ResponseEntity<?> addEnchere(@RequestBody @Valid EnchereFormInput enchereForm) {
         Enchere enchere = toEnchere(enchereForm);
         Map<String, String> errors = new HashMap<>();
+        Enchere highestEnchere = es.getHighestEnchereForArticle(enchere.getArticle().getId());
+        if (highestEnchere != null){
+            if (highestEnchere.getUtilisateur() == enchere.getUtilisateur() ) {
+                errors.put("user", "L'utilisateur ne peut pas sur-enchérir sur sa propre enchère");
+            }
+            if (highestEnchere != null && enchere.getMontantEnchere() <= highestEnchere.getMontantEnchere()) {
+                errors.put("montant", "Le montant de l'enchère doit être supérieur au montant actuel le plus élevé.");
+            }
+        }
+
 
         if (enchere.getMontantEnchere() > enchere.getUtilisateur().getCredit()) {
             errors.put("user", "Vous n'avez pas assez de crédit!");
@@ -66,15 +76,12 @@ public class EnchereController {
         if (enchere.getArticle().getVendeur().equals(enchere.getUtilisateur())) {
             errors.put("user", "L'utilisateur ne peut pas enchérir sur son propre article!");
         }
+
         if (enchere.getDateEnchere().isBefore(enchere.getArticle().getDateDebut())) {
             errors.put("user", "L'enchère n'as pas débuté");
         }
         if (enchere.getDateEnchere().isAfter(enchere.getArticle().getDateFin())) {
             errors.put("user", "L'enchère est terminé");
-        }
-        Enchere highestEnchere = es.getHighestEnchereForArticle(enchere.getArticle().getId());
-        if (highestEnchere != null && enchere.getMontantEnchere() <= highestEnchere.getMontantEnchere()) {
-            errors.put("montant", "Le montant de l'enchère doit être supérieur au montant actuel le plus élevé.");
         }
 
         if (!errors.isEmpty()) {
