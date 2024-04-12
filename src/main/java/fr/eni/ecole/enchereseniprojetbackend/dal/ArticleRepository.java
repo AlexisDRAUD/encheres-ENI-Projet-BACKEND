@@ -17,7 +17,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
             "where (:nomArticle is null or a.nom_article LIKE %:nomArticle%)" +
             "AND (:categorieId is null or a.categorie_id=:categorieId)" +
-            "AND (:openBids is false or a.date_fin > :currentTime)" +
+            "AND (:openBids is false or (a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
             "AND (:ongoingBids is false or (a.date_debut < :currentTime AND a.date_fin > :currentTime AND e.utilisateur_id = :userId))" +
             "AND (:wonBids is false or (a.date_fin < :currentTime AND a.acheteur_id = :userId))" +
             "AND (:ongoingSales is false or (a.vendeur_id = :userId AND a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
