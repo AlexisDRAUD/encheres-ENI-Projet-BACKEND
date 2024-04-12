@@ -10,6 +10,9 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -45,8 +48,10 @@ public class ArticleController {
         return as.consulterArticle();
     }
 
-    @PostMapping
-    public List<Article> listarticle(@RequestBody @Valid SearchFilterInput searchFilter) {
+    @PostMapping("/{pageNum}")
+    public Page<Article> listarticle(@RequestBody @Valid SearchFilterInput searchFilter, @PathVariable("pageNum") int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum-1, 6);
+
         if (searchFilter.countTrueBooleans() > 3) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Too many filters!");
         }
@@ -56,14 +61,14 @@ public class ArticleController {
             if (auth != null ) {
                 UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) auth.getPrincipal();
                 if (userDetails.getUtilisateur().getId() == searchFilter.getUserId()) {
-                    return as.getArticlesBySearchFilter(searchFilter);
+                    return as.getArticlesBySearchFilter(searchFilter, pageable);
                 }
             }
 
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous n'avez pas accès a cet utilisateur !");
         }
 
-        return as.getArticlesBySearchFilter(searchFilter);
+        return as.getArticlesBySearchFilter(searchFilter, pageable);
     }
 
     @GetMapping("/detail/{id}")
