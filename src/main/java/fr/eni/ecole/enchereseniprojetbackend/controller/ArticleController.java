@@ -112,7 +112,8 @@ public class ArticleController {
                     article.getVendeur().getId(),
                     article.getRetrait().getRue(),
                     article.getRetrait().getCodePostal(),
-                    article.getRetrait().getVille()
+                    article.getRetrait().getVille(),
+                    article.getImg()
             );
             System.out.println("articleForUpdate : " + articleForUpdate.toString());
             return ResponseEntity.ok(articleForUpdate);
@@ -153,6 +154,7 @@ public class ArticleController {
                     article.setDateFin(articleForUpdate.getDateFin());
                     article.setMiseAPrix(articleForUpdate.getMiseAPrix());
                     article.setPrixVente(articleForUpdate.getPrixVente());
+                    article.setImg(articleForUpdate.getImg());
                     article.setVendeur(us.getUserById(articleForUpdate.getVendeurId()));
                     article.setCategorie(cs.consulterCategorieParId(articleForUpdate.getCategorieId()));
 

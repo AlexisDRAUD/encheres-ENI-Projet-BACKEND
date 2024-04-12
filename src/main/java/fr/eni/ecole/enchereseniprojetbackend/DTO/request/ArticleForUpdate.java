@@ -34,6 +34,8 @@ public class ArticleForUpdate {
 
     private String ville;
 
+    private String img;
+
     @Override
     public String toString() {
         return "ArticleForUpdate{" +
@@ -49,6 +51,7 @@ public class ArticleForUpdate {
                 ", rue='" + rue + '\'' +
                 ", codePostal='" + codePostal + '\'' +
                 ", ville='" + ville + '\'' +
+                ", img='" + img + '\'' +
                 '}';
     }
 }
