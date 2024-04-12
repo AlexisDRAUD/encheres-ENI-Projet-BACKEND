@@ -50,8 +50,10 @@ public class Article {
     @ManyToOne
     private Retrait retrait;
 
+    private String img;
+
     public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
-                   long miseAPrix, long prixVente, Categorie categorie, Utilisateur vendeur,
+                   long miseAPrix, long prixVente, Categorie categorie, Utilisateur vendeur , String img,
                    Retrait retrait) {
         this.nomArticle = nomArticle;
         this.description = description;
@@ -62,11 +64,12 @@ public class Article {
         this.categorie = categorie;
         this.vendeur = vendeur;
         this.retrait = retrait;
+        this.img = img;
     }
 
     public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
                    long miseAPrix, long prixVente, Categorie categorie, Utilisateur vendeur,
-                   Utilisateur acheteur,
+                   Utilisateur acheteur, String img,
                    Retrait retrait) {
         this.nomArticle = nomArticle;
         this.description = description;
@@ -78,6 +81,7 @@ public class Article {
         this.vendeur = vendeur;
         this.acheteur = acheteur;
         this.retrait = retrait;
+        this.img = img;
     }
 
     public void setId(Long id) {

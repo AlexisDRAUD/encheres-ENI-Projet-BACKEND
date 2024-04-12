@@ -216,6 +216,7 @@ public class ArticleController {
                 articleForm.getPrixVente(),
                 cs.consulterCategorieParId(articleForm.getCategorieId()),
                 us.getUserById(articleForm.getVendeurId()),
+                articleForm.getImg(),
                 new Retrait(articleForm.getRue(),articleForm.getCodePostal(), articleForm.getVille())
         );
     }

@@ -49,4 +49,6 @@ public class ArticleFormInput {
     @NotBlank(message = "La ville est obligatoire")
     private String ville;
 
+    private String img;
+
 }
