@@ -2,12 +2,14 @@ package fr.eni.ecole.enchereseniprojetbackend.bll;
 
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.SearchFilterInput;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public interface ArticlesService {
-    List<Article> getArticlesBySearchFilter(SearchFilterInput searchFilter);
+    Page<Article> getArticlesBySearchFilter(SearchFilterInput searchFilter, Pageable pageable);
 
     List<Article> consulterArticle();
 

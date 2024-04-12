@@ -6,11 +6,11 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.EtatVente;
 import fr.eni.ecole.enchereseniprojetbackend.dal.ArticleRepository;
 import fr.eni.ecole.enchereseniprojetbackend.dal.RetraitRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 @Service
@@ -25,7 +25,7 @@ public class ArticlesServicesImpl implements ArticlesService {
     }
 
     @Override
-    public List<Article> getArticlesBySearchFilter(SearchFilterInput searchFilter) {
+    public Page<Article> getArticlesBySearchFilter(SearchFilterInput searchFilter, Pageable pageable) {
         String userId = (searchFilter.getUserId() == 0)
                 ? null : searchFilter.getUserId().toString();
         String search = (searchFilter.getSearch() == null || searchFilter.getSearch().isBlank())
@@ -36,7 +36,7 @@ public class ArticlesServicesImpl implements ArticlesService {
         return articleRepository.findArticlesByFilter(
                 userId, search, categorieId,
                 LocalDateTime.now(), searchFilter.isOpenBids(), searchFilter.isOngoingBids(), searchFilter.isWonBids(),
-                searchFilter.isOngoingSales(), searchFilter.isNotStartedSales(), searchFilter.isCompletedSales());
+                searchFilter.isOngoingSales(), searchFilter.isNotStartedSales(), searchFilter.isCompletedSales(), pageable);
     }
 
     @Override
