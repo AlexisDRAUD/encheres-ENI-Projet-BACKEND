@@ -62,11 +62,11 @@ public class DBMock {
         ur.save(u3);
 
         Article a1 = new Article("Article1", "Description1", LocalDateTime.of(2024, 4, 8, 10, 0),
-                LocalDateTime.of(2024, 4, 13, 10, 0), 100, 100,  cat1, u1, u2, adresse1);
+                LocalDateTime.of(2024, 4, 13, 10, 0), 100, 100,  cat1, u1, null, adresse1);
         Article a2 = new Article("Article2", "Description2", LocalDateTime.of(2024, 4, 10, 10, 0),
-                LocalDateTime.of(2024, 4, 12, 10, 0), 200, 200, cat2, u2, u3, adresse2);
+                LocalDateTime.of(2024, 4, 12, 10, 0), 200, 200, cat2, u2, null, adresse2);
         Article a3 = new Article("Article3", "Description3", LocalDateTime.of(2024, 4, 12, 10, 0),
-                LocalDateTime.of(2024, 4, 14, 10, 0), 300, 300, cat3, u3, u1, adresse3);
+                LocalDateTime.of(2024, 4, 14, 10, 0), 300, 300, cat3, u3, null, adresse3);
         ar.save(a1);
         ar.save(a2);
         ar.save(a3);

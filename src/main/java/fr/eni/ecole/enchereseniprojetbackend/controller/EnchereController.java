@@ -4,6 +4,7 @@ import fr.eni.ecole.enchereseniprojetbackend.DTO.request.EnchereFormInput;
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.EncheresService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,14 +56,18 @@ public class EnchereController {
 
     @PostMapping(path = "/add")
     public ResponseEntity<?> addEnchere(@RequestBody @Valid EnchereFormInput enchereForm) {
-        Enchere enchere = toEnchere(enchereForm); // Supposons que cette méthode convertit le form en objet Enchere
+        Enchere enchere = toEnchere(enchereForm);
         Map<String, String> errors = new HashMap<>();
 
         if (enchere.getArticle().getVendeur().equals(enchere.getUtilisateur())){
             errors.put("user", "L'utilisateur ne peut pas enchérir sur son propre article!");
         }
-
-        // Récupère l'enchère la plus haute pour cet article
+        if (enchere.getDateEnchere().isBefore(enchere.getArticle().getDateDebut())) {
+            errors.put("user", "L'enchère n'as pas débuté");
+        }
+        if (enchere.getDateEnchere().isAfter(enchere.getArticle().getDateFin())) {
+            errors.put("user", "L'enchère est terminé");
+        }
         Enchere highestEnchere = es.getHighestEnchereForArticle(enchere.getArticle().getId());
         if (highestEnchere != null && enchere.getMontantEnchere() < highestEnchere.getMontantEnchere()) {
             errors.put("montant", "Le montant de l'enchère doit être supérieur au montant actuel le plus élevé.");
@@ -72,6 +77,10 @@ public class EnchereController {
             return ResponseEntity.badRequest().body(errors);
         } else {
             es.creerEnchere(enchere);
+            Article article = enchere.getArticle();
+            article.setAcheteur(enchere.getUtilisateur());
+            article.setPrixVente(enchere.getMontantEnchere());
+            as.editArticle(article);
             return ResponseEntity.ok("Enchère créée avec succès");
         }
     }
