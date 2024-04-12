@@ -44,6 +44,7 @@ public class EnchereController {
             return ResponseEntity.ok(liste);
         }
     }
+
     @GetMapping("/article/{id}")
     public ResponseEntity<List<Enchere>> getEnchereByArticleId(@PathVariable("id") int id) {
         List<Enchere> liste = es.consulterEncherebyarticleID(id);
@@ -59,7 +60,10 @@ public class EnchereController {
         Enchere enchere = toEnchere(enchereForm);
         Map<String, String> errors = new HashMap<>();
 
-        if (enchere.getArticle().getVendeur().equals(enchere.getUtilisateur())){
+        if (enchere.getMontantEnchere() > enchere.getUtilisateur().getCredit()) {
+            errors.put("user", "Vous n'avez pas assez de crédit!");
+        }
+        if (enchere.getArticle().getVendeur().equals(enchere.getUtilisateur())) {
             errors.put("user", "L'utilisateur ne peut pas enchérir sur son propre article!");
         }
         if (enchere.getDateEnchere().isBefore(enchere.getArticle().getDateDebut())) {
@@ -69,19 +73,23 @@ public class EnchereController {
             errors.put("user", "L'enchère est terminé");
         }
         Enchere highestEnchere = es.getHighestEnchereForArticle(enchere.getArticle().getId());
-        if (highestEnchere != null && enchere.getMontantEnchere() < highestEnchere.getMontantEnchere()) {
+        if (highestEnchere != null && enchere.getMontantEnchere() <= highestEnchere.getMontantEnchere()) {
             errors.put("montant", "Le montant de l'enchère doit être supérieur au montant actuel le plus élevé.");
         }
 
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         } else {
-            es.creerEnchere(enchere);
-            Article article = enchere.getArticle();
-            article.setAcheteur(enchere.getUtilisateur());
-            article.setPrixVente(enchere.getMontantEnchere());
-            as.editArticle(article);
-            return ResponseEntity.ok("Enchère créée avec succès");
+            try {
+                es.creerEnchere(enchere);
+                Article article = enchere.getArticle();
+                article.setAcheteur(enchere.getUtilisateur());
+                article.setPrixVente(enchere.getMontantEnchere());
+                as.editArticle(article);
+                return ResponseEntity.ok("Enchère créée avec succès");
+            } catch (Exception e) {
+                return ResponseEntity.ok("La création de l'enchère a échoué");
+            }
         }
     }
 

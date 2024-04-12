@@ -2,8 +2,11 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.EncheresService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.dal.EnchereRepository;
+import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,8 +17,11 @@ public class EncheresServicesImpl implements EncheresService {
 
     final EnchereRepository er;
 
-    public EncheresServicesImpl(EnchereRepository er) {
+    final UtilisateurRepository ur;
+
+    public EncheresServicesImpl(EnchereRepository er, UtilisateurRepository ur) {
         this.er = er;
+        this.ur = ur;
     }
 
     @Override
@@ -42,7 +48,19 @@ public class EncheresServicesImpl implements EncheresService {
     }
 
     @Override
-    public void creerEnchere(Enchere enchere) {
+    @Transactional(rollbackFor = Exception.class)
+    public void creerEnchere(Enchere enchere) throws Exception {
+
+        Enchere lastEnchere = getHighestEnchereForArticle(enchere.getArticle().getId());
+        if (lastEnchere != null) {
+            Utilisateur lastUser = lastEnchere.getUtilisateur();
+            lastUser.setCredit(lastUser.getCredit()+lastEnchere.getMontantEnchere());
+            ur.save(lastUser);
+        }
+        Utilisateur newUser = enchere.getUtilisateur();
+        newUser.setCredit(newUser.getCredit()-enchere.getMontantEnchere());
+        ur.save(newUser);
+
         er.save(enchere);
     }
 

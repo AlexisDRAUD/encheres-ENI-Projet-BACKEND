@@ -11,4 +11,5 @@ public interface EnchereRepository extends JpaRepository<Enchere, Long> {
 
     List<Enchere> findAllByArticle_id (int id);
 
+
 }
