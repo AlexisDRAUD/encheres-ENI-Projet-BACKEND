@@ -11,7 +11,7 @@ public interface EncheresService {
 
     Enchere getHighestEnchereForArticle(long id);
 
-    void creerEnchere(Enchere enchere);
+    void creerEnchere(Enchere enchere) throws Exception;
 
 
     void editEnchere(Enchere enchere);
