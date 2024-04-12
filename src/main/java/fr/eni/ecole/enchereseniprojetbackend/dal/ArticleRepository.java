@@ -17,12 +17,12 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
             "where (:nomArticle is null or a.nom_article LIKE %:nomArticle%)" +
             "AND (:categorieId is null or a.categorie_id=:categorieId)" +
-            "AND (:openBids is false or (a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
-            "AND (:ongoingBids is false or (a.date_debut < :currentTime AND a.date_fin > :currentTime AND e.utilisateur_id = :userId))" +
-            "AND (:wonBids is false or (a.date_fin < :currentTime AND a.acheteur_id = :userId))" +
-            "AND (:ongoingSales is false or (a.vendeur_id = :userId AND a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
-            "AND (:notStartedSales is false or (a.vendeur_id = :userId AND a.date_debut > :currentTime))" +
-            "AND (:completedSales is false or (a.vendeur_id = :userId AND a.date_fin < :currentTime))",
+            "AND ((:openBids is true AND (a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
+            "OR (:ongoingBids is true AND (a.date_debut < :currentTime AND a.date_fin > :currentTime AND e.utilisateur_id = :userId))" +
+            "OR (:wonBids is true AND (a.date_fin < :currentTime AND a.acheteur_id = :userId))" +
+            "OR (:ongoingSales is true AND (a.vendeur_id = :userId AND a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
+            "OR (:notStartedSales is true AND (a.vendeur_id = :userId AND a.date_debut > :currentTime))" +
+            "OR (:completedSales is true AND (a.vendeur_id = :userId AND a.date_fin < :currentTime)))",
             nativeQuery = true)
     List<Article> findArticlesByFilter(@Param("userId") String userId,
                                        @Param("nomArticle") String nomArticle,

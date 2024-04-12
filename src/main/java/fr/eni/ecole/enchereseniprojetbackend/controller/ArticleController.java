@@ -47,7 +47,7 @@ public class ArticleController {
 
     @PostMapping
     public List<Article> listarticle(@RequestBody @Valid SearchFilterInput searchFilter) {
-        if (searchFilter.countTrueBooleans() > 1) {
+        if (searchFilter.countTrueBooleans() > 3) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Too many filters!");
         }
 
