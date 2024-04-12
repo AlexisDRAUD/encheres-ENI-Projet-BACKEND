@@ -78,4 +78,6 @@ public class ArticlesServicesImpl implements ArticlesService {
     public void supprimerArticle(long id) {
         articleRepository.deleteAllById(Collections.singleton(id));
     }
+
+
 }
