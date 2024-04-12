@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,6 +47,9 @@ public class ArticleController {
 
     @PostMapping
     public List<Article> listarticle(@RequestBody @Valid SearchFilterInput searchFilter) {
+        if (searchFilter.countTrueBooleans() > 3) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Too many filters!");
+        }
 
         if (searchFilter.getUserId() != null && searchFilter.getUserId() != 0) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
