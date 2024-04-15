@@ -1,8 +1,9 @@
 package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
+import fr.eni.ecole.enchereseniprojetbackend.bo.PasswordResetToken;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
+import fr.eni.ecole.enchereseniprojetbackend.dal.PasswordTokenRepository;
 import fr.eni.ecole.enchereseniprojetbackend.dal.RetraitRepository;
 import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurRepository;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
@@ -24,6 +25,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     RetraitRepository rr;
 
     @Autowired
+    PasswordTokenRepository ptr;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Override
@@ -38,6 +42,24 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             user = ur.findByEmail(username);
         }
         return user;
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(Utilisateur user, String token) {
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        ptr.save(myToken);
+    }
+
+    @Override
+    public void changeUserPassword(Utilisateur user, String password) {
+        ptr.deleteById(ptr.findByUser(user).getId());
+        user.setPassword(encoder.encode(password));
+        ur.save(user);
+    }
+
+    @Override
+    public Utilisateur getUserByEmail(String email) {
+        return ur.findByEmail(email);
     }
 
     @Override
