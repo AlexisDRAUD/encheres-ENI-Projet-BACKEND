@@ -158,8 +158,8 @@ public class AuthController {
 
 	private SimpleMailMessage constructResetTokenEmail(String token, Utilisateur user) {
 		String url = "http://localhost:3000/change-password/" + token;
-		String message ="resetPassword message";
-		return constructEmail("Reset Password", message + " \r\n" + url, user);
+		String message ="Cliquez sur le lien suivant pour modifier votre mot de passe : ";
+		return constructEmail("Lien de changement de mot de passe", message + " \r\n" + url, user);
 	}
 
 	private SimpleMailMessage constructEmail(String subject, String body,
