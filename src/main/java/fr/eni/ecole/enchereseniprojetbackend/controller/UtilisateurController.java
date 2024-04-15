@@ -113,7 +113,7 @@ public class UtilisateurController {
         UtilisateurSpringSecurity userDetails =
                 (UtilisateurSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (userDetails.getUtilisateur().getId() == id)
+        if (userDetails.getUtilisateur().getId() == id || userDetails.getUtilisateur().isAdministrateur())
         {
             if (us.getUserById(id) != null) {
                 us.deleteUserById(id);
