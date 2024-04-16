@@ -16,6 +16,6 @@ public interface EncheresService {
 
     void editEnchere(Enchere enchere);
 
-    void supprimerEnchere(long id);
+    String supprimerEnchere(long id);
 
 }

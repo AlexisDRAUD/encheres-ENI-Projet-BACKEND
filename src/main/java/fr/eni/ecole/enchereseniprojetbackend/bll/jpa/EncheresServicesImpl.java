@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.ToIntFunction;
 
 @Service
@@ -70,11 +71,14 @@ public class EncheresServicesImpl implements EncheresService {
     }
 
     @Override
-    public void supprimerEnchere(long id) {
-        Enchere enchere = er.getReferenceById(id);
-        if (enchere != null) {
+    public String supprimerEnchere(long id) {
+        String message = "OK";
+        Optional<Enchere> enchere = er.findById(id);
+        if (enchere.isPresent()) {
             er.deleteById(id);
+        } else {
+            message = "Erreur lors de la suppression";
         }
-
+        return message;
     }
 }
