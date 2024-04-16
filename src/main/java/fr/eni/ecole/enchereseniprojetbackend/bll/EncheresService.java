@@ -5,9 +5,9 @@ import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 import java.util.List;
 
 public interface EncheresService {
-    List<Enchere> consulterEncherebyuserID(int id);
+    List<Enchere> consulterEncherebyuserID(long id);
 
-    List<Enchere> consulterEncherebyarticleID(int id);
+    List<Enchere> consulterEncherebyarticleID(long id);
 
     Enchere getHighestEnchereForArticle(long id);
 

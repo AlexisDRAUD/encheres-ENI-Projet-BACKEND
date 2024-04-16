@@ -25,12 +25,12 @@ public class EncheresServicesImpl implements EncheresService {
     }
 
     @Override
-    public List<Enchere> consulterEncherebyuserID(int id) {
+    public List<Enchere> consulterEncherebyuserID(long id) {
         return er.findAllByUtilisateur_id(id);
     }
 
     @Override
-    public List<Enchere> consulterEncherebyarticleID(int id) {
+    public List<Enchere> consulterEncherebyarticleID(long id) {
         return er.findAllByArticle_id(id);
     }
 
@@ -71,6 +71,10 @@ public class EncheresServicesImpl implements EncheresService {
 
     @Override
     public void supprimerEnchere(long id) {
+        Enchere enchere = er.getReferenceById(id);
+        if (enchere != null) {
+            er.deleteById(id);
+        }
 
     }
 }

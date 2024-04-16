@@ -35,6 +35,12 @@ public class EnchereController {
         this.us = us;
     }
 
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
+        es.supprimerEnchere(id);
+    }
+
+
     @GetMapping("/user/{id}")
     public ResponseEntity<List<Enchere>> getEnchereByUserId(@PathVariable("id") int id) {
         List<Enchere> liste = es.consulterEncherebyuserID(id);
