@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface EnchereRepository extends JpaRepository<Enchere, Long> {
 
-    List<Enchere> findAllByUtilisateur_id (int id);
+    List<Enchere> findAllByUtilisateur_id (long id);
 
-    List<Enchere> findAllByArticle_id (int id);
+    List<Enchere> findAllByArticle_id (long id);
 
 
 }
