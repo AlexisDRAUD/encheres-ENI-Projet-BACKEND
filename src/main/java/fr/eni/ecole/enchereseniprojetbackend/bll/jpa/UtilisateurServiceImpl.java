@@ -82,7 +82,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Map<String, String> errors = new HashMap<>();
 
         Utilisateur user = ur.findById(id);
-        user.setUsername(userForm.getUsername());
         user.setNom(userForm.getNom());
         user.setPrenom(userForm.getPrenom());
         user.setEmail(userForm.getEmail());
