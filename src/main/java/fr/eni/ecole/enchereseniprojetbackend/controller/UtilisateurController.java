@@ -10,6 +10,7 @@ import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,23 @@ public class UtilisateurController {
     private EncheresService encheresService;
 
 
+    @GetMapping()
+    public ResponseEntity<List<Utilisateur>> getUsers() {
+        UtilisateurSpringSecurity userDetails =
+                (UtilisateurSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (userDetails.getUtilisateur().isAdministrateur())
+        {
+            List<Utilisateur> utilisateurs = us.getUsers();
+            if(utilisateurs != null){
+                return new ResponseEntity<>(utilisateurs, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
 
     @GetMapping("/{id}")
     public UserPayload getUserById(@PathVariable("id") Long id) {
@@ -123,7 +141,6 @@ public class UtilisateurController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         UtilisateurSpringSecurity userDetails =
                 (UtilisateurSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if (userDetails.getUtilisateur().getId() == id || userDetails.getUtilisateur().isAdministrateur())
         {
             if (us.getUserById(id) != null) {
