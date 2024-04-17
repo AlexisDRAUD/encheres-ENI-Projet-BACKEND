@@ -243,7 +243,7 @@ public class DBMock {
             int nbBoucle = faker.number().numberBetween(0, 10);
             for(int i = 0; i < nbBoucle; i++) {
                 Enchere e = new Enchere(LocalDateTime.now().plusMinutes(i),
-                        (int) (article.getPrixVente()+faker.number().numberBetween(1,100)),
+                        article.getPrixVente()+faker.number().numberBetween(1,100),
                         userList.get(faker.number().numberBetween(0, userList.size()-1)), article);
                 article.setPrixVente(e.getMontantEnchere());
                 ar.save(article);
