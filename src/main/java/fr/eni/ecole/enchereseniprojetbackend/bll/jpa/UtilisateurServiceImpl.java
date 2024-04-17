@@ -2,7 +2,7 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.EncheresService;
-import fr.eni.ecole.enchereseniprojetbackend.bll.mock.UtilisateurDesactiveService;
+import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurDesactiveService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.PasswordDto;

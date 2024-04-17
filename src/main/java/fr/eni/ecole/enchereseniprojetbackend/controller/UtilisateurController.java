@@ -9,9 +9,7 @@ import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.EncheresService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
-import fr.eni.ecole.enchereseniprojetbackend.bll.mock.UtilisateurDesactiveService;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
-import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
+import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurDesactiveService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.bo.UtilisateurDesactive;
 import jakarta.validation.Valid;
@@ -23,15 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
