@@ -100,7 +100,7 @@ public class DBMock {
         File file = new File("test.xsd");
         System.out.println("Absolute Path: " + file.getAbsolutePath());
         try {
-            Files.move(Paths.get("encheres-ENI-Projet-BACKEND/src/main/resources/img/guitare.jpg"), Paths.get("/tmp" +
+            Files.move(Paths.get("/app/src/main/resources/img/guitare.jpg"), Paths.get("/tmp" +
                     "/guitare.jpg"), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception ignored) {}
 
@@ -114,7 +114,7 @@ public class DBMock {
         artList.add(a2);
         ar.save(a2);
         try {
-            Files.move(Paths.get("encheres-ENI-Projet-BACKEND/src/main/resources/img/ordiHP.jpg"), Paths.get("/tmp" +
+            Files.move(Paths.get("/app/src/main/resources/img/ordiHP.jpg"), Paths.get("/tmp" +
                     "/ordiHP.jpg"), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception ignored) {}
 
