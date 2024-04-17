@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -96,6 +97,8 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a1);
         ar.save(a1);
+        File file = new File("test.xsd");
+        System.out.println("Absolute Path: " + file.getAbsolutePath());
         try {
             Files.move(Paths.get("encheres-ENI-Projet-BACKEND/src/main/resources/img/guitare.jpg"), Paths.get("/tmp" +
                     "/guitare.jpg"), StandardCopyOption.REPLACE_EXISTING);
