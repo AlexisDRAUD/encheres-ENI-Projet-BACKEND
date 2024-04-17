@@ -97,11 +97,6 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a1);
         ar.save(a1);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/guitare.jpg"), Paths.get("/tmp" +
-                    "/guitare.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
-
 
         Article a2 = new Article("Ordinateur HP", "17 pouces, très bon état, HDMI, lecteur CD/DVD, subwoofer intégré, ports USB.",
                 LocalDateTime.of(2024, 4, 16, 10, 0),
@@ -111,10 +106,6 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a2);
         ar.save(a2);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/ordiHP.jpg"), Paths.get("/tmp" +
-                    "/ordiHP.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
 
 
         Article a3 = new Article("Xiaomi Redmi A2 32G", "Neuf, jamais ouvert.\n" +
@@ -127,10 +118,6 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a3);
         ar.save(a3);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/XiaomiA2.jpg"), Paths.get("/tmp" +
-                    "/XiaomiA2.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
 
         Article a4 = new Article("Bmx", "Bmx btwin pour enfant, freins fonctionnels, cales pieds, selle rétractable, guidon en acier.",
                 LocalDateTime.of(2024, 4, 16, 10, 0),
@@ -140,10 +127,6 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a4);
         ar.save(a4);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/bmx.jpg"), Paths.get("/tmp" +
-                    "/bmx.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
 
         Article a5 = new Article("Voiture majorette limousine avec toit ouvrant n°339 echelle 1/58", "VOITURE MAJORETTE LIMOUSINE AVEC TOIT OUVRANT N°339 ECHELLE 1/58",
                 LocalDateTime.of(2024, 4, 16, 10, 0),
@@ -153,10 +136,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a5);
         ar.save(a5);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/majorette.jpg"), Paths.get("/tmp" +
-                    "/majorette.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         Article a6 = new Article("One pièce figurine dxf brotherhood 2", "Figurine one piece dxf brotherhood 2\n" +
                 "Toujours très bien entretenu officiel acheté à la Japan Expo\n" +
@@ -168,10 +148,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a6);
         ar.save(a6);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/onepiece.jpg"), Paths.get("/tmp" +
-                    "/onepiece.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         Article a7 = new Article("Chaussures homme randonnée quechoua décathlon", "CHAUSSURES RANDONNÉE\n" +
                 "QUECHOUA\n" +
@@ -185,10 +162,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a7);
         ar.save(a7);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/chaussureQuechua.jpg"), Paths.get("/tmp" +
-                    "/chaussureQuechua.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         Article a8 = new Article("Pompe filtration piscine Bestway", "Pompe filtration à sable ou balle de filtration" +
                 " fourni avec. En très bon état,utilisé que deux mois.",
@@ -199,10 +173,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a8);
         ar.save(a8);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/pompeFiltre.jpg"), Paths.get("/tmp" +
-                    "/pompeFiltre.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         Article a9 = new Article("185 kg de poids olympiques en fonte", "185 kg de poids diamètre olympique. Fonte. " +
                 "pas abimés,\n" +
@@ -218,10 +189,6 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a9);
         ar.save(a9);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/poidFonte.jpg"), Paths.get("/tmp" +
-                    "/poidFonte.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
 
         Article a10 = new Article("Galaxy tab A9 128 giga 4g", "Produit très bonne état général\n" +
                 "Fonctionne parfaitement",
@@ -232,10 +199,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a10);
         ar.save(a10);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/galaxytapa9.jpg"), Paths.get("/tmp" +
-                    "/galaxytapa9.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         Article a11 = new Article("Pencil ipad Apple", "Pencil Apple 2nde génération\n" +
                 "État neuf\n" +
@@ -248,10 +212,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a11);
         ar.save(a11);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/applePencil.jpg"), Paths.get("/tmp" +
-                    "/applePencil.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         Article a12 = new Article("Opel Adam 1.4 Twinport 87ch Unlimited Start/Stop", "Opel Adam 1.4 Twinport 87ch Unlimited Start/Stop, Gris, 5cv, 3 portes, mise en circulation le 16-10-2018, première main, garantie 12 mois (Spoticar-Premium 12 Mois).\n" +
                 "\n" +
@@ -266,10 +227,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a12);
         ar.save(a12);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/voitureOpel.jpg"), Paths.get("/tmp" +
-                    "/voitureOpel.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         Article a13 = new Article("Assiettes", "12 petites assiettes\n" +
                 "12 creuses\n" +
@@ -281,10 +239,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a13);
         ar.save(a13);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/assiettes.jpg"), Paths.get("/tmp" +
-                    "/assiettes.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         Article a14 = new Article("Poissons boucles d’oreilles dorées pour femme", "Poissons boucles d’oreilles dorées en perles pour femme\n" +
                 "Doré/blanc/vert",
@@ -295,10 +250,7 @@ public class DBMock {
                 userList.size()-1)));
         artList.add(a14);
         ar.save(a14);
-        try {
-            Files.move(Paths.get("/app/src/main/resources/img/boucleOreille.jpg"), Paths.get("/tmp" +
-                    "/boucleOreille.jpg"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ignored) {}
+
 
         //Encheres
         artList.forEach(article -> {
