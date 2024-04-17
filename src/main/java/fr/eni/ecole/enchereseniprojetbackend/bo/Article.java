@@ -19,12 +19,13 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Le nom de l'article est obligatoire")
     private String nomArticle;
 
     @NotBlank(message = "La description est obligatoire")
+    @Size(max = 2500)
     @Column(length = 2500)
     private String description;
 
@@ -35,10 +36,10 @@ public class Article {
     private LocalDateTime dateFin;
 
     @Positive
-    private long miseAPrix;
+    private Long miseAPrix;
 
     @Positive
-    private long prixVente;
+    private Long prixVente;
 
     @ManyToOne
     private Categorie categorie;
@@ -84,14 +85,6 @@ public class Article {
         this.acheteur = acheteur;
         this.retrait = retrait;
         this.img = img;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return (int) id;
     }
 
     public EtatVente getEtatVente() {

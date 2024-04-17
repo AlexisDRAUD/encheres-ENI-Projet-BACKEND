@@ -11,7 +11,6 @@ public interface CategorieService {
 
     String creerCategorie(Categorie categorie);
 
-
     void editCategorie(Categorie Categorie);
 
     void supprimerCategorie(long id);

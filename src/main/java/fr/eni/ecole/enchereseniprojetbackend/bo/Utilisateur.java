@@ -19,7 +19,7 @@ public class Utilisateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Le pseudo est obligatoire")
     private String username;
@@ -49,7 +49,7 @@ public class Utilisateur {
     private String password;
 
     @PositiveOrZero
-    private long credit;
+    private Long credit;
 
     @NotNull
     private boolean administrateur;

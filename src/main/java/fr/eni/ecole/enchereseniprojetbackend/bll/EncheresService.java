@@ -3,6 +3,7 @@ package fr.eni.ecole.enchereseniprojetbackend.bll;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EncheresService {
     List<Enchere> consulterEncherebyuserID(long id);
@@ -11,8 +12,7 @@ public interface EncheresService {
 
     Enchere getHighestEnchereForArticle(long id);
 
-    void creerEnchere(Enchere enchere) throws Exception;
-
+    Map<String, String> creerEnchere(Enchere enchere, Map<String, String> errors) throws Exception;
 
     void editEnchere(Enchere enchere);
 

@@ -1,6 +1,9 @@
 package fr.eni.ecole.enchereseniprojetbackend.bll;
 
 import java.util.List;
+import java.util.Map;
+
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.PasswordDto;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
 
@@ -16,7 +19,13 @@ public interface UtilisateurService {
 
     void addUser(UserFormInput userForm);
 
-    void updateUser(UserFormInput userForm, long id);
+    Map<String, String> updateUser(UserFormInput userForm, long id, Map<String, String> errors);
+
+    Map<String, String> registerUser(UserFormInput userForm, Map<String, String> errors);
+
+    Map<String, String> resetPassword(String email, Map<String, String> errors);
+
+    Map<String, String> savePassword(PasswordDto passwordDTO, Map<String, String> errors);
 
     void deleteUserById(long id);
 

@@ -2,15 +2,13 @@ package fr.eni.ecole.enchereseniprojetbackend.controller;
 
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.*;
 import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
-import fr.eni.ecole.enchereseniprojetbackend.Security.UtilisateurSpringSecurity;
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.CategorieService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.bll.mock.RetraitService;
+import fr.eni.ecole.enchereseniprojetbackend.bll.RetraitService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import jakarta.validation.Valid;
-import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,18 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/article")
@@ -95,7 +86,7 @@ public class ArticleController {
     }
 
     @GetMapping("/modif/{id}")
-    public ResponseEntity<ArticleForUpdate> getArticleForUpdateById(@PathVariable("id") int id) {
+    public ResponseEntity<ArticleForUpdate> getArticleForUpdateById(@PathVariable("id") Long id) {
         System.out.println("id : " + id);
         Article article = as.consulterArticleParId(id);
         System.out.println("Article : " + article);

@@ -96,28 +96,7 @@ public class UtilisateurController {
                     return ResponseEntity.badRequest().body(errors);
                 }
 
-                if (us.usernameAlreadyExist(userForm.getUsername()) && !userForm.getUsername().equals(userDetails.getUsername())) {
-                    errors.put("username", "Username is already taken!");
-                }
-
-                if (us.emailAlreadyExist(userForm.getEmail()) && !userForm.getEmail().equals(userDetails.getEmail())) {
-                    errors.put("email", "Email is already in use!");
-                }
-
-                if (userForm.getPassword() != null && !userForm.getPassword().isBlank()) {
-                    if (userForm.getOldPassword() == null || userForm.getOldPassword().isBlank() || !us.isValidOldPassword(userForm.getOldPassword(),
-                            us.getUserById(id).getPassword())) {
-                        errors.put("oldPassword", "Actual password is incorrect!");
-                    }
-
-                    if (userForm.getPassword().length() >= 6 && userForm.getPassword().length() <= 30) {
-                        if (!us.isValidPassword(userForm.getPassword(), userForm.getPasswordConfirmation())) {
-                            errors.put("password", "Passwords do not match!");
-                        }
-                    } else {
-                        errors.put("password", "Le taille du mot de passe doit être compris entre 6 et 30!");
-                    }
-                }
+                errors = us.updateUser(userForm, id, errors);
 
                 if (!errors.isEmpty()) {
                     return ResponseEntity
@@ -125,7 +104,6 @@ public class UtilisateurController {
                             .body(errors);
                 }
 
-                us.updateUser(userForm, id);
             }
             else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet utilisateur n'existe pas !");

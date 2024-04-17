@@ -23,14 +23,14 @@ public class Enchere {
     private LocalDateTime dateEnchere;
 
     @PositiveOrZero
-    private int montantEnchere;
+    private Long montantEnchere;
 
     @ManyToOne
     private Utilisateur utilisateur;
     @ManyToOne
     private Article article;
 
-    public Enchere(LocalDateTime dateEnchere, int montantEnchere, Utilisateur utilisateur, Article article) {
+    public Enchere(LocalDateTime dateEnchere, Long montantEnchere, Utilisateur utilisateur, Article article) {
         this.dateEnchere = dateEnchere;
         this.montantEnchere = montantEnchere;
         this.utilisateur = utilisateur;
