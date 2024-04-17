@@ -1,9 +1,10 @@
 package fr.eni.ecole.enchereseniprojetbackend.dal;
 
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
 

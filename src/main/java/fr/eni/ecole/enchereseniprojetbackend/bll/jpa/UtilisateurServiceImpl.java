@@ -212,6 +212,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return errors;
     }
 
+    @Override
+    public Map<String, String> addMoney(long userId, Long money, Map<String, String> errors) {
+        Utilisateur u = ur.findById(userId);
+        u.setCredit( u.getCredit() + money);
+        ur.save(u);
+        return errors;
+    }
+
+
     private SimpleMailMessage constructResetTokenEmail(String token, Utilisateur user) {
         String url = "http://localhost:3000/change-password/" + token;
         String message ="Cliquez sur le lien suivant pour modifier votre mot de passe : ";
