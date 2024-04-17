@@ -3,7 +3,10 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 import fr.eni.ecole.enchereseniprojetbackend.bll.CategorieService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Categorie;
 import fr.eni.ecole.enchereseniprojetbackend.dal.CategorieRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,42 +27,43 @@ public class CategorieServicesImpl implements CategorieService {
     }
 
     @Override
-    public Categorie consulterCategorieParId(long id) {
-        return categorieRepository.findByid(id);
+    public Categorie consulterCategorieParId(long id) throws ResponseStatusException {
+        Categorie existingCategorie = categorieRepository.findById(id).orElse(null);
+        if (existingCategorie != null) {
+            return existingCategorie;
+        }else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "cette catégorie n'existe pas");
+        }
     }
 
     @Override
-    public String creerCategorie(Categorie categorie) {
-        String result = "OK";
+    public void creerCategorie(Categorie categorie) throws ResponseStatusException{
         List<Categorie> categories = categorieRepository.findAll();
         List<String> libelles = new ArrayList<>();
         categories.forEach(cat -> libelles.add(cat.getLibelle().toLowerCase()));
-
-        //List<String> libelles = categories.stream().map(cat -> cat.getLibelle().toLowerCase());
-        System.out.println("CREER" + libelles);
         if(!libelles.contains(categorie.getLibelle().toLowerCase())){
             categorieRepository.save(categorie);
-            return result;
         } else {
-            result = "Erreur";
-            return result;
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "catégorie existante");
         }
     }
 
     @Override
     public void editCategorie(Categorie Categorie) {
         Categorie existingCategorie = categorieRepository.findById(Categorie.getId()).orElse(null);
-
         if (existingCategorie != null) {
             existingCategorie.setLibelle(Categorie.getLibelle());
-
             categorieRepository.save(existingCategorie);
         }
-
     }
 
     @Override
-    public void supprimerCategorie(long id) {
-        categorieRepository.deleteById(id);
+    public void supprimerCategorie(long id) throws ResponseStatusException{
+        Categorie existingCategorie = categorieRepository.findById(id).orElse(null);
+        if (existingCategorie != null) {
+            categorieRepository.deleteById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "cette catégorie n'existe pas");
+        }
     }
 }

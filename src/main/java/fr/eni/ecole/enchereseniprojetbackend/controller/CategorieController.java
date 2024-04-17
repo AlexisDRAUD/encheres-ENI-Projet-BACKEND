@@ -17,40 +17,44 @@ import java.util.List;
 public class CategorieController {
 
     @Autowired
-    private final CategorieService cs;
-
+    private CategorieService cs;
+/*
     public CategorieController(CategorieService cs) {
         this.cs = cs;
     }
-
+*/
     @GetMapping
     public List<Categorie> listCategorie() {
         return cs.consulterCategorie();
     }
 
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<Categorie> getCategorieById(@PathVariable("id") int id) {
-        Categorie article = cs.consulterCategorieParId(id);
-        if (article != null) {
-            return ResponseEntity.ok(article);
-        }else {
-            return ResponseEntity.accepted().build();
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCategorieById(@PathVariable("id") long id) {
+        try {
+            Categorie categorie = cs.consulterCategorieParId(id);
+            return ResponseEntity.ok(categorie);
+        }catch (ResponseStatusException error) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
+    }
     }
 
     @PostMapping("/add")
-    public void addCategorie(@RequestBody @Valid Categorie categorie) {
-        String reponse = cs.creerCategorie(categorie);
-        if(reponse.equals("OK")) {
-            new ResponseStatusException(HttpStatus.OK, "Catégorie ajoutée");
-        } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cette catégorie existe déjà !");
+    public ResponseEntity<?> addCategorie(@RequestBody @Valid Categorie categorie) {
+        try {
+            cs.creerCategorie(categorie);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ResponseStatusException error) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erreur lors de l'insertion : " + error.getMessage());
         }
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteCategorie(@RequestBody @PathVariable Long id) {
-        cs.supprimerCategorie(id);
-        return "redirect:/";
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCategorie(@RequestBody @PathVariable Long id) {
+        try {
+            cs.supprimerCategorie(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ResponseStatusException error) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(error.getMessage());
+        }
     }
 }
