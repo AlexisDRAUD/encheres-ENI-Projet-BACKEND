@@ -8,9 +8,11 @@ import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.EncheresService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
+import fr.eni.ecole.enchereseniprojetbackend.bll.mock.UtilisateurDesactiveService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
+import fr.eni.ecole.enchereseniprojetbackend.bo.UtilisateurDesactive;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,9 +33,6 @@ import java.util.stream.Collectors;
 public class UtilisateurController {
 
     @Autowired
-    UtilisateurService us;
-
-    @Autowired
     private JwtUtils jwtUtils;
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
@@ -46,6 +45,12 @@ public class UtilisateurController {
     @Autowired
     private EncheresService encheresService;
 
+    @Autowired
+    UtilisateurService us;
+
+    @Autowired
+    UtilisateurDesactiveService uds;
+
 
     @GetMapping()
     public ResponseEntity<List<Utilisateur>> getUsers() {
@@ -57,6 +62,24 @@ public class UtilisateurController {
             List<Utilisateur> utilisateurs = us.getUsers();
             if(utilisateurs != null){
                 return new ResponseEntity<>(utilisateurs, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @GetMapping("/disabled")
+    public ResponseEntity<List<UtilisateurDesactive>> getUsersDisabled() {
+        UtilisateurSpringSecurity userDetails =
+                (UtilisateurSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (userDetails.getUtilisateur().isAdministrateur())
+        {
+            List<UtilisateurDesactive> utilisateursDisabled = uds.getUsers();
+            if(utilisateursDisabled != null){
+                return new ResponseEntity<>(utilisateursDisabled, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -115,121 +138,45 @@ public class UtilisateurController {
         return ResponseEntity.ok().body("L'utilisateur a été modifié.");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}/{isForDisabled}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id, @PathVariable("isForDisabled") Boolean isForDisabled) {
         UtilisateurSpringSecurity userDetails =
                 (UtilisateurSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userDetails.getUtilisateur().getId() == id || userDetails.getUtilisateur().isAdministrateur())
         {
-            if (us.getUserById(id) != null) {
-                //Liste de tous les articles
-                List<Article> articles =  articlesService.consulterArticle();
-                //Liste des articles à supprimer
-                List<Article> articlesUtilisateur = articles.stream().filter(article -> article.getVendeur().getId() == id).toList();
-                if (!articlesUtilisateur.isEmpty()) {
-                    for(Article article : articlesUtilisateur){
-                        if(article.getAcheteur() != null) {
-                            //liste des encheres coorespondant à l'article
-                            List<Enchere> ventesEnCours = encheresService.consulterEncherebyarticleID(article.getId());
-
-                            //on recrédite le compte de l'acheteur de la dernière enchère
-                            Enchere derniereEnchere = ventesEnCours.get(ventesEnCours.size() - 1);
-                            derniereEnchere.getUtilisateur().setCredit(derniereEnchere.getUtilisateur()
-                                    .getCredit() + derniereEnchere.getMontantEnchere());
-
-                            //suppression de ttes les encheres de l'article
-                            for (Enchere enchere : ventesEnCours) {
-                                String reponse = encheresService.supprimerEnchere(enchere.getId());
-                                if(!reponse.equals("OK")){
-                                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, reponse);
-                                }
-                            }
-                        }
-                        articlesService.supprimerArticle(article.getId());
-                    }
-                }
-                //Gestion des encheres à supprimer avec mise à jour
-                // des crédits utilisateurs et des articles
-                List<Enchere> mesEncheres = encheresService.consulterEncherebyuserID(id);
-
-                if(!mesEncheres.isEmpty()){
-                    //on récupère un tableau sans doublon des id des articles concernés
-                    Set<Long> idArticles = mesEncheres.stream().map(e -> e.getArticle().getId()).collect(Collectors.toSet());
-                    for(Long idArt : idArticles){
-                        // liste des encheres de chaque article sur lesquels l'utilisateur a fait une ou plusieurs encheres
-                        List<Enchere> mesEncheresArticles = encheresService.consulterEncherebyarticleID(idArt);
-
-                        //si dernière enchère à pour acheteur utilisateur
-                        if(mesEncheresArticles.get(mesEncheresArticles.size()-1).getUtilisateur().getId() == id){
-                            if(mesEncheresArticles.size() != 1) {
-                                Boolean stop = false;
-                                //on cherche l'enchere précédente, on vérifie si le compte utilisateur > montant enchere précédente
-                                // et si ce n'est pas une enchere avec acheteur = utilisateur
-                                int i = 2;
-                                while(!stop && i <= mesEncheresArticles.size()){
-                                    if (mesEncheresArticles.get(mesEncheresArticles.size()-i).getUtilisateur().getCredit()
-                                            > mesEncheresArticles.get(mesEncheresArticles.size()-i).getMontantEnchere() &&
-                                            mesEncheresArticles.get(mesEncheresArticles.size()-i).getUtilisateur().getId() != id
-                                    ) {
-                                        //j'enlève le montant de l'enchere sur son compte
-                                        mesEncheresArticles.get(mesEncheresArticles.size()-i).getUtilisateur()
-                                                .setCredit(
-                                                        mesEncheresArticles.get(mesEncheresArticles.size()-i).getUtilisateur().getCredit()
-                                                                - mesEncheresArticles.get(mesEncheresArticles.size()-i).getMontantEnchere()
-                                                );
-                                        //cet utilisateur devient acheteur du produit
-                                        mesEncheresArticles.get(mesEncheresArticles.size()-i).getArticle().setAcheteur(
-                                                us.getUserById(mesEncheresArticles.get(mesEncheresArticles.size()-i).getUtilisateur().getId())
-                                        );
-                                        //montant de cette enchère devient le nouveau prix de vente
-                                        mesEncheresArticles.get(mesEncheresArticles.size()-i).getArticle()
-                                                .setPrixVente(
-                                                        mesEncheresArticles.get(mesEncheresArticles.size()-i).getMontantEnchere()
-                                                );
-                                        stop = true;
-                                    } else {
-                                        //je supprime cette enchère
-                                        String reponse = encheresService.supprimerEnchere(mesEncheresArticles.get(mesEncheresArticles.size()-i).getId());
-                                        if(!reponse.equals("OK")){
-                                            throw new ResponseStatusException(HttpStatus.NOT_FOUND, reponse);
-                                        }
-                                        i +=1;
-                                        //si il ne reste plus d'encheres, on maj l'article
-                                        if(i > mesEncheresArticles.size()){
-                                            System.out.println("Pas utilise essai 2");
-                                            Article art = articlesService.consulterArticleParId(idArt);
-                                            art.setPrixVente(art.getMiseAPrix());
-                                            art.setAcheteur(null);
-                                        }
-                                    }
-                                }
-                            } else {
-                                Article art = articlesService.consulterArticleParId(idArt);
-                                art.setPrixVente(art.getMiseAPrix());
-                                art.setAcheteur(null);
-                            }
-                        }
-                        //suppression des encheres de l'utilisateur qui correspondent à l'article
-                        List<Enchere> encheresForDelete = encheresService.consulterEncherebyuserID(id).stream()
-                               .filter(e -> e.getArticle().getId() == idArt).toList();
-                        if(!encheresForDelete.isEmpty()){
-                            for(Enchere enchere : encheresForDelete){
-                                String reponse = encheresService.supprimerEnchere(enchere.getId());
-                                if(!reponse.equals("OK")){
-                                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, reponse);
-                                }
-                            }
-                        }
-                    }
-                }
-                us.deleteUserById(id);
-                throw new ResponseStatusException(HttpStatus.OK, "utilisateur supprimé avec succès");
+            try {
+                us.deleteUserById(id, isForDisabled);
+            } catch (ResponseStatusException error){
+                throw error;
             }
-            else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet utilisateur n'existe pas !");
-            }
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous n'avez pas accès a cet utilisateur !");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Vous n'avez pas accès à cet utilisateur !");
+        }
+    }
+
+    @DeleteMapping("/reactiver/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
+        UtilisateurDesactive utilisateurDesactive = uds.getUserDesactiveById(id);
+        if(utilisateurDesactive != null){
+            Utilisateur u = new Utilisateur(
+                    utilisateurDesactive.getUsername(),
+                    utilisateurDesactive.getPrenom(),
+                    utilisateurDesactive.getNom(),
+                    utilisateurDesactive.getEmail(),
+                    utilisateurDesactive.getTelephone(),
+                    utilisateurDesactive.getRue(),
+                    utilisateurDesactive.getCodePostal(),
+                    utilisateurDesactive.getVille(),
+                    utilisateurDesactive.getPassword(),
+                    utilisateurDesactive.getCredit(),
+                    utilisateurDesactive.isAdministrateur()
+            );
+            uds.userReactive(u);
+            uds.deleteUserDesactiveById(id);
+            throw new ResponseStatusException(HttpStatus.OK, "utilisateur réactivé avec succès");
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet utilisateur n'a pas été désactivé !");
         }
     }
 }

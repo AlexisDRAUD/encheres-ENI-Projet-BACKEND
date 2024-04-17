@@ -6,6 +6,7 @@ import java.util.Map;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.PasswordDto;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.UserFormInput;
+import org.springframework.web.server.ResponseStatusException;
 
 public interface UtilisateurService {
 
@@ -27,7 +28,15 @@ public interface UtilisateurService {
 
     Map<String, String> savePassword(PasswordDto passwordDTO, Map<String, String> errors);
 
-    void deleteUserById(long id);
+    //void deleteUserById(long id);
+
+    /*
+        @Override
+        public void deleteUserById(long id) {
+            ur.deleteById(id);
+        }
+    */
+    void deleteUserById(long id, Boolean isForDisabled) throws ResponseStatusException;
 
     boolean usernameAlreadyExist(String username);
 
@@ -40,4 +49,5 @@ public interface UtilisateurService {
     void createPasswordResetTokenForUser(Utilisateur user, String token);
 
     void changeUserPassword(Utilisateur user, String password);
+
 }
