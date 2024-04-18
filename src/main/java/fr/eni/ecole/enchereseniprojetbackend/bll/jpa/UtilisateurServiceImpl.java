@@ -114,10 +114,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             errors.put("email", "Email is already in use!");
         }
 
-        errors = checkPassword(userForm.getPassword(), userForm.getPasswordConfirmation(), errors);
-        if (userForm.getOldPassword() == null || userForm.getOldPassword().isBlank() || !isValidOldPassword(userForm.getOldPassword(),
-                getUserById(id).getPassword())) {
-            errors.put("oldPassword", "Actual password is incorrect!");
+        if (userForm.getPassword() != null && !userForm.getPassword().isBlank()) {
+            errors = checkPassword(userForm.getPassword(), userForm.getPasswordConfirmation(), errors);
+            if (userForm.getOldPassword() == null || userForm.getOldPassword().isBlank() || !isValidOldPassword(userForm.getOldPassword(),
+                    getUserById(id).getPassword())) {
+                errors.put("oldPassword", "Actual password is incorrect!");
+            }
         }
 
         if (!errors.isEmpty()) {
