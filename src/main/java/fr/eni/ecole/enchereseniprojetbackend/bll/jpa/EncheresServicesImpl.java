@@ -60,7 +60,6 @@ public class EncheresServicesImpl implements EncheresService {
     public Map<String, String> creerEnchere(Enchere enchere, Map<String, String> errors) throws Exception {
 
         errors = checkEnchere(enchere, errors);
-
         if (!errors.isEmpty()) {
             return errors;
         }
@@ -95,6 +94,7 @@ public class EncheresServicesImpl implements EncheresService {
                 errors.put("montant", "Le montant de l'enchère doit être supérieur au montant actuel le plus élevé.");
             }
         }
+
 
         if (enchere.getMontantEnchere() > enchere.getUtilisateur().getCredit()) {
             errors.put("user", "Vous n'avez pas assez de crédit!");

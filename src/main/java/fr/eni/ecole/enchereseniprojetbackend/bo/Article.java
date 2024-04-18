@@ -55,10 +55,6 @@ public class Article {
 
     private String img;
 
-    private Boolean acheteurRetire;
-
-    private Boolean vendeurRetire;
-
     public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
                    long miseAPrix, long prixVente, Categorie categorie, Utilisateur vendeur , String img,
                    Retrait retrait) {
@@ -72,8 +68,6 @@ public class Article {
         this.vendeur = vendeur;
         this.retrait = retrait;
         this.img = img;
-        this.acheteurRetire = false;
-        this.vendeurRetire = false;
     }
 
     public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
