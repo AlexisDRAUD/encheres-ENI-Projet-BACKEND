@@ -28,6 +28,8 @@ public interface UtilisateurService {
 
     Map<String, String> savePassword(PasswordDto passwordDTO, Map<String, String> errors);
 
+    Map<String, String> addMoney(long Userid, Long money , Map<String, String> errors);
+
     //void deleteUserById(long id);
 
     /*
@@ -49,5 +51,7 @@ public interface UtilisateurService {
     void createPasswordResetTokenForUser(Utilisateur user, String token);
 
     void changeUserPassword(Utilisateur user, String password);
+
+
 
 }

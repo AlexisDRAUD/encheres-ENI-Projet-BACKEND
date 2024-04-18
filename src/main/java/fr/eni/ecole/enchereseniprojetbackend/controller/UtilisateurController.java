@@ -1,5 +1,6 @@
 package fr.eni.ecole.enchereseniprojetbackend.controller;
 
+import fr.eni.ecole.enchereseniprojetbackend.DTO.request.MoneyRequest;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.response.UserPayload;
 import fr.eni.ecole.enchereseniprojetbackend.Security.JwtUtils;
 import fr.eni.ecole.enchereseniprojetbackend.Security.MyUserDetailsService;
@@ -22,8 +23,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -179,5 +185,23 @@ public class UtilisateurController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet utilisateur n'a pas été désactivé !");
         }
     }
+
+
+    @PostMapping("/credit")
+    public ResponseEntity<String> addMoney(@RequestBody MoneyRequest moneyRequest) {
+        try {
+            Map<String, String> errors = new HashMap<>();
+            errors = us.addMoney(moneyRequest.getId(), moneyRequest.getMoney(), errors);
+
+            if (!errors.isEmpty()) {
+                return ResponseEntity.badRequest().body(errors.toString());
+            }
+            return ResponseEntity.ok("Ajout de points avec succès");
+        } catch (Exception error) {
+            return ResponseEntity.badRequest().body("Erreur lors de l'ajout de points: " + error.getMessage());
+        }
+    }
+
+
 }
 
