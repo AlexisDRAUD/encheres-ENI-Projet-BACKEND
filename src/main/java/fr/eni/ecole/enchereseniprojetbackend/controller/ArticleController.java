@@ -121,6 +121,30 @@ public class ArticleController {
         }
     }
 
+    @PutMapping("/{id}/retire")
+    public ResponseEntity<?> putArticleRetire(@PathVariable("id") Long id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) auth.getPrincipal();
+        Article article = as.consulterArticleParId(id);
+
+        if (auth != null &&
+                (userDetails.getUtilisateur().getId() == article.getVendeur().getId() ||
+                userDetails.getUtilisateur().getId() == article.getAcheteur().getId())
+        ) {
+            if(userDetails.getUtilisateur().getId() == article.getVendeur().getId()){
+                article.setVendeurRetire(true);
+            } else {
+                article.setAcheteurRetire(true);
+            }
+            if(article.getVendeurRetire() == article.getAcheteurRetire() == true){
+                article.getVendeur().setCredit(article.getVendeur().getCredit() + article.getPrixVente());
+            }
+            throw new ResponseStatusException(HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous n'avez pas accès à cette article!");
+        }
+}
+
     @PutMapping("/{id}")
     public void putArticle(@RequestBody @Valid ArticleForUpdate articleForUpdate,
                                      @PathVariable("id") Long id) {
