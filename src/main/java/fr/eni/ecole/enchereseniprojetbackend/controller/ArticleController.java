@@ -9,6 +9,8 @@ import fr.eni.ecole.enchereseniprojetbackend.bll.RetraitService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Categorie;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
+import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,11 +43,15 @@ public class ArticleController {
     @Autowired
     private final RetraitService rs;
 
-    public ArticleController(ArticlesService as, CategorieService cs, UtilisateurService us, RetraitService rs) {
+    @Autowired
+    private final UtilisateurRepository ur;
+
+    public ArticleController(ArticlesService as, CategorieService cs, UtilisateurService us, RetraitService rs, UtilisateurRepository ur) {
         this.as = as;
         this.cs = cs;
         this.us = us;
         this.rs = rs;
+        this.ur = ur;
     }
 
     @GetMapping
@@ -133,11 +139,15 @@ public class ArticleController {
         ) {
             if(userDetails.getUtilisateur().getId() == article.getVendeur().getId()){
                 article.setVendeurRetire(true);
+                as.creerArticle(article);
             } else {
                 article.setAcheteurRetire(true);
+                as.creerArticle(article);
             }
             if(article.getVendeurRetire() == article.getAcheteurRetire() == true){
                 article.getVendeur().setCredit(article.getVendeur().getCredit() + article.getPrixVente());
+
+                ur.save(article.getVendeur());
             }
             throw new ResponseStatusException(HttpStatus.OK);
         } else {
