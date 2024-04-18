@@ -279,9 +279,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                     articlesService.supprimerArticle(article.getId());
                 }
             }
-            //Gestion des encheres à supprimer avec mise à jour
-            // des crédits utilisateurs et des articles
-            List<Enchere> mesEncheres = encheresService.consulterEncherebyuserID(id);
+        //Gestion des encheres à supprimer avec mise à jour
+        // des crédits utilisateurs et des articles
+        List<Enchere> mesEncheres = encheresService.consulterEncherebyuserID(id);
         if(!mesEncheres.isEmpty()){
             //on récupère un tableau sans doublon des id des articles concernés
             Set<Long> idArticles = mesEncheres.stream().map(e -> e.getArticle().getId()).collect(Collectors.toSet());
@@ -354,6 +354,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         if(isForDisabled){
             Utilisateur u = getUserById(id);
             uds.addUserDesactive(u);
+            ur.deleteById(id);
             throw new ResponseStatusException(HttpStatus.OK, "utilisateur désactivé avec succès");
         } else {
             ur.deleteById(id);
