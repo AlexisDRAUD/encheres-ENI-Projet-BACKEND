@@ -108,7 +108,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public Map<String, String> updateUser(UserFormInput userForm, long id, Map<String, String> errors) {
 
-        errors = checkUserForm(userForm, errors);
+        Utilisateur user = ur.findById(id);
+
+        if (emailAlreadyExist(userForm.getEmail()) && !userForm.getEmail().equals(user.getEmail())) {
+            errors.put("email", "Email is already in use!");
+        }
+
+        errors = checkPassword(userForm.getPassword(), userForm.getPasswordConfirmation(), errors);
         if (userForm.getOldPassword() == null || userForm.getOldPassword().isBlank() || !isValidOldPassword(userForm.getOldPassword(),
                 getUserById(id).getPassword())) {
             errors.put("oldPassword", "Actual password is incorrect!");
@@ -118,7 +124,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             return errors;
         }
 
-        Utilisateur user = ur.findById(id);
         user.setNom(userForm.getNom());
         user.setPrenom(userForm.getPrenom());
         user.setEmail(userForm.getEmail());
