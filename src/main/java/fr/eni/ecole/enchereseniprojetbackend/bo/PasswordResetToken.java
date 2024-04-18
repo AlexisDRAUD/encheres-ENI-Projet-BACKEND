@@ -21,7 +21,7 @@ public class PasswordResetToken {
     @JoinColumn(nullable = false, name = "user_id")
     private Utilisateur user;
 
-    private LocalDateTime expiryDate = LocalDateTime.now().plusHours(2).plusMinutes(EXPIRATION);
+    private LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(EXPIRATION);
 
     public PasswordResetToken() {}
 
