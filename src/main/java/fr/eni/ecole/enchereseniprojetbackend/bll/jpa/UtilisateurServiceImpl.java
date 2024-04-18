@@ -2,7 +2,7 @@ package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.ArticlesService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.EncheresService;
-import fr.eni.ecole.enchereseniprojetbackend.bll.mock.UtilisateurDesactiveService;
+import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurDesactiveService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Enchere;
 import fr.eni.ecole.enchereseniprojetbackend.DTO.request.PasswordDto;
@@ -222,7 +222,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
     private SimpleMailMessage constructResetTokenEmail(String token, Utilisateur user) {
-        String url = "http://localhost:3000/change-password/" + token;
+        String url = "https://encheres-eni-projet-front.vercel.app/change-password/" + token;
         String message ="Cliquez sur le lien suivant pour modifier votre mot de passe : ";
         return constructEmail("Lien de changement de mot de passe", message + " \r\n" + url, user);
     }

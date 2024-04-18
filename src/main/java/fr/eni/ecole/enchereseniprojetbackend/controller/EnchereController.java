@@ -68,11 +68,7 @@ public class EnchereController {
 
         try {
             errors = es.creerEnchere(enchere, errors);
-            if (!errors.isEmpty()) {
-                return ResponseEntity.badRequest().body(errors);
-            } else {
-                return ResponseEntity.ok("Enchère créée avec succès");
-            }
+            return ResponseEntity.ok("Enchère créée avec succès");
         } catch (Exception e) {
             return ResponseEntity.ok("La création de l'enchère a échoué");
         }

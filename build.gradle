@@ -39,9 +39,16 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	implementation 'com.auth0:java-jwt:4.0.0'
-
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+springBoot {
+	mainClass = 'fr.eni.ecole.enchereseniprojetbackend.EncheresEniProjetBackendApplication'
+}
+
+jar {
+	enabled = false
 }

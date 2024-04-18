@@ -79,7 +79,7 @@ public class AuthController {
 	public ResponseEntity<?> resetPassword(@RequestParam("email") String userEmail) {
 		Map<String, String> errors = new HashMap<>();
 
-		us.resetPassword(userEmail, errors);
+		errors = us.resetPassword(userEmail, errors);
 
 		if (errors.isEmpty()) {
 			return ResponseEntity.ok("Email envoyé");
