@@ -94,7 +94,9 @@ public class EncheresServicesImpl implements EncheresService {
                 errors.put("montant", "Le montant de l'enchère doit être supérieur au montant actuel le plus élevé.");
             }
         }
-
+        if (enchere.getMontantEnchere() < enchere.getArticle().getMiseAPrix()) {
+            errors.put("montant", "Le montant doit être supérieur au montant de la mise à prix");
+        }
 
         if (enchere.getMontantEnchere() > enchere.getUtilisateur().getCredit()) {
             errors.put("user", "Vous n'avez pas assez de crédit!");
