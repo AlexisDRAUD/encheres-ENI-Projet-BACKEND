@@ -7,6 +7,7 @@ import fr.eni.ecole.enchereseniprojetbackend.bll.CategorieService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
 import fr.eni.ecole.enchereseniprojetbackend.bll.RetraitService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Article;
+import fr.eni.ecole.enchereseniprojetbackend.bo.Categorie;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Retrait;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,20 +77,18 @@ public class ArticleController {
     }
 
     @GetMapping("/detail/{id}")
-    public ResponseEntity<Article> getArticleById(@PathVariable("id") int id) {
+    public ResponseEntity<?> getArticleById(@PathVariable("id") int id) {
         Article article = as.consulterArticleParId(id);
         if (article != null) {
             return ResponseEntity.ok(article);
         }else {
-            return ResponseEntity.accepted().build();
+            return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/modif/{id}")
-    public ResponseEntity<ArticleForUpdate> getArticleForUpdateById(@PathVariable("id") Long id) {
-        System.out.println("id : " + id);
+    public ResponseEntity<?> getArticleForUpdateById(@PathVariable("id") Long id) {
         Article article = as.consulterArticleParId(id);
-        System.out.println("Article : " + article);
         if (article != null) {
             ArticleForUpdate articleForUpdate = new ArticleForUpdate(
                     article.getId(),
@@ -106,22 +105,20 @@ public class ArticleController {
                     article.getRetrait().getVille(),
                     article.getImg()
             );
-            System.out.println("articleForUpdate : " + articleForUpdate.toString());
             return ResponseEntity.ok(articleForUpdate);
         }else {
-            return ResponseEntity.accepted().build();
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping(path = "/add")
-    public void addArticle(@RequestBody @Valid ArticleFormInput articleForm) {
-        //, @RequestPart("file") MultipartFile file) throws IOException
-//        byte[] bytes = file.getBytes();
-//        Path path = Paths.get("./img/" + file.getOriginalFilename());
-//        Files.write(path, bytes);
-//        article.setImage(String.valueOf(path));
-
-        as.creerArticle(toArticle(articleForm));
+    public ResponseEntity<?> addArticle(@RequestBody @Valid ArticleFormInput articleForm) {
+        try {
+            as.creerArticle(toArticle(articleForm));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }catch (ResponseStatusException error) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(error.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -167,35 +164,35 @@ public class ArticleController {
         }
     }
 
-    @PostMapping("/delete/{id}")
-    public void deleteArticle(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteArticle(@PathVariable Long id) {
         LocalDateTime date = LocalDateTime.now();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Article article = as.consulterArticleParId(id);
-        if (article == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet article n'existe pas !");
-        } else {
-            if (auth != null ) {
-                UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) auth.getPrincipal();
-                System.out.println("idAuthenti: " + userDetails.getUtilisateur().getId());
-                if(article.getDateDebut().isAfter(date) &&
-                        userDetails.getUtilisateur().getId() == article.getVendeur().getId())
-                {
+
+        if (auth != null ) {
+            UtilisateurSpringSecurity userDetails = (UtilisateurSpringSecurity) auth.getPrincipal();
+            if(article.getDateDebut().isAfter(date) &&
+                    userDetails.getUtilisateur().getId() == article.getVendeur().getId())
+            {
+                if (article == null) {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet article n'existe pas !");
+                } else {
                     long idRetrait = (rs.recupererRetraitById(id)).getId();
                     as.supprimerArticle(id);
                     Article articleVerif = as.consulterArticleParId(id);
                     if(articleVerif == null){
                         rs.deleteRetrait(idRetrait);
+                        throw new ResponseStatusException(HttpStatus.OK);
                     } else {
                         throw new ResponseStatusException(HttpStatus.CONFLICT, "L'article n'a pas été supprimé !");
                     }
-
-                }else {
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous ne pouvez pas supprimer cet article !");
                 }
             } else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous n'avez pas accès a cet utilisateur !");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous ne pouvez pas supprimer cet article !");
             }
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Vous devez être connecté !");
         }
     }
 
