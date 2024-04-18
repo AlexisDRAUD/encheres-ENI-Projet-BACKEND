@@ -35,7 +35,7 @@ public class ArticlesServicesImpl implements ArticlesService {
 
         return articleRepository.findArticlesByFilter(
                 userId, search, categorieId,
-                LocalDateTime.now(), searchFilter.isOpenBids(), searchFilter.isOngoingBids(), searchFilter.isWonBids(),
+                LocalDateTime.now().plusHours(2), searchFilter.isOpenBids(), searchFilter.isOngoingBids(), searchFilter.isWonBids(),
                 searchFilter.isOngoingSales(), searchFilter.isNotStartedSales(), searchFilter.isCompletedSales(), pageable);
     }
 
