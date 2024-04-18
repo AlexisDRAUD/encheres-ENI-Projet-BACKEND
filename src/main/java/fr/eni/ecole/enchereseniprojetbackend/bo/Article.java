@@ -94,7 +94,7 @@ public class Article {
     }
 
     public EtatVente getEtatVente() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().plusHours(2);
         if (now.isBefore(dateDebut)) {
             return EtatVente.CREER;
         } else if (now.isAfter(dateDebut) && now.isBefore(dateFin)) {

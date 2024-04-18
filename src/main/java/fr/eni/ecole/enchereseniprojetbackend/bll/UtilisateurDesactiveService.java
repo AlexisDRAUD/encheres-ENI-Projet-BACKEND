@@ -1,4 +1,4 @@
-package fr.eni.ecole.enchereseniprojetbackend.bll.mock;
+package fr.eni.ecole.enchereseniprojetbackend.bll;
 
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.bo.UtilisateurDesactive;

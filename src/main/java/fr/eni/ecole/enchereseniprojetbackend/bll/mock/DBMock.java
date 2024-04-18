@@ -7,10 +7,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Profile("mock")
 @Service
@@ -89,7 +93,7 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 100, 100,  cat4, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/guitare.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/guitare.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a1);
         ar.save(a1);
@@ -98,10 +102,11 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 220, 220,  cat1, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/ordiHP.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/ordiHP.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a2);
         ar.save(a2);
+
 
         Article a3 = new Article("Xiaomi Redmi A2 32G", "Neuf, jamais ouvert.\n" +
                 "\n" +
@@ -109,7 +114,7 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 60, 60,  cat1, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/XiaomiA2.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/XiaomiA2.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a3);
         ar.save(a3);
@@ -118,7 +123,7 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 60, 60,  cat4, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/bmx.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/bmx.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a4);
         ar.save(a4);
@@ -127,10 +132,11 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 12, 12,  cat4, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/majorette.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/majorette.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a5);
         ar.save(a5);
+
 
         Article a6 = new Article("One pièce figurine dxf brotherhood 2", "Figurine one piece dxf brotherhood 2\n" +
                 "Toujours très bien entretenu officiel acheté à la Japan Expo\n" +
@@ -138,10 +144,11 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 150, 150,  cat4, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/onepiece.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/onepiece.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a6);
         ar.save(a6);
+
 
         Article a7 = new Article("Chaussures homme randonnée quechoua décathlon", "CHAUSSURES RANDONNÉE\n" +
                 "QUECHOUA\n" +
@@ -151,20 +158,22 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 30, 30,  cat3, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/chaussureQuechua.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/chaussureQuechua.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a7);
         ar.save(a7);
+
 
         Article a8 = new Article("Pompe filtration piscine Bestway", "Pompe filtration à sable ou balle de filtration" +
                 " fourni avec. En très bon état,utilisé que deux mois.",
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 120, 120,  cat5, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/pompeFiltre.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/pompeFiltre.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a8);
         ar.save(a8);
+
 
         Article a9 = new Article("185 kg de poids olympiques en fonte", "185 kg de poids diamètre olympique. Fonte. " +
                 "pas abimés,\n" +
@@ -176,7 +185,7 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 300, 300,  cat4, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/poidFonte.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/poidFonte.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a9);
         ar.save(a9);
@@ -186,10 +195,11 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 200, 200,  cat1, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/galaxytapa9.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/galaxytapa9.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a10);
         ar.save(a10);
+
 
         Article a11 = new Article("Pencil ipad Apple", "Pencil Apple 2nde génération\n" +
                 "État neuf\n" +
@@ -198,10 +208,11 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 90, 90,  cat1, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/applePencil.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/applePencil.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a11);
         ar.save(a11);
+
 
         Article a12 = new Article("Opel Adam 1.4 Twinport 87ch Unlimited Start/Stop", "Opel Adam 1.4 Twinport 87ch Unlimited Start/Stop, Gris, 5cv, 3 portes, mise en circulation le 16-10-2018, première main, garantie 12 mois (Spoticar-Premium 12 Mois).\n" +
                 "\n" +
@@ -212,10 +223,11 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 9990, 9990,  cat5, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/voitureOpel.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/voitureOpel.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a12);
         ar.save(a12);
+
 
         Article a13 = new Article("Assiettes", "12 petites assiettes\n" +
                 "12 creuses\n" +
@@ -223,20 +235,22 @@ public class DBMock {
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 50, 50,  cat2, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/assiettes.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/assiettes.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a13);
         ar.save(a13);
+
 
         Article a14 = new Article("Poissons boucles d’oreilles dorées pour femme", "Poissons boucles d’oreilles dorées en perles pour femme\n" +
                 "Doré/blanc/vert",
                 LocalDateTime.of(2024, 4, 16, 10, 0),
                 LocalDateTime.of(2024, 4, 30, 10, 0),
                 10, 10,  cat3, userList.get(faker.number().numberBetween(0, userList.size()-1)),
-                "http://localhost:8080/upload/boucleOreille.jpg", retraitList.get(faker.number().numberBetween(0,
+                "https://enchere-app.osc-fr1.scalingo.io/upload/boucleOreille.jpg", retraitList.get(faker.number().numberBetween(0,
                 userList.size()-1)));
         artList.add(a14);
         ar.save(a14);
+
 
         //Encheres
         artList.forEach(article -> {

@@ -1,7 +1,7 @@
 package fr.eni.ecole.enchereseniprojetbackend.bll.jpa;
 
 import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurService;
-import fr.eni.ecole.enchereseniprojetbackend.bll.mock.UtilisateurDesactiveService;
+import fr.eni.ecole.enchereseniprojetbackend.bll.UtilisateurDesactiveService;
 import fr.eni.ecole.enchereseniprojetbackend.bo.Utilisateur;
 import fr.eni.ecole.enchereseniprojetbackend.bo.UtilisateurDesactive;
 import fr.eni.ecole.enchereseniprojetbackend.dal.UtilisateurDesactiveRepository;

@@ -148,7 +148,7 @@ public class ArticleController {
     @PutMapping("/{id}")
     public void putArticle(@RequestBody @Valid ArticleForUpdate articleForUpdate,
                                      @PathVariable("id") Long id) {
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().plusHours(2);
         System.out.println("date: " + date);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -188,9 +188,10 @@ public class ArticleController {
         }
     }
 
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteArticle(@PathVariable Long id) {
-        LocalDateTime date = LocalDateTime.now();
+    public void deleteArticle(@PathVariable Long id) {
+        LocalDateTime date = LocalDateTime.now().plusHours(2);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Article article = as.consulterArticleParId(id);
 
