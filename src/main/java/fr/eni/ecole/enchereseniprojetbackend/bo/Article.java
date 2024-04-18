@@ -55,6 +55,10 @@ public class Article {
 
     private String img;
 
+    private Boolean acheteurRetire;
+
+    private Boolean vendeurRetire;
+
     public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
                    long miseAPrix, long prixVente, Categorie categorie, Utilisateur vendeur , String img,
                    Retrait retrait) {
@@ -68,6 +72,8 @@ public class Article {
         this.vendeur = vendeur;
         this.retrait = retrait;
         this.img = img;
+        this.acheteurRetire = false;
+        this.vendeurRetire = false;
     }
 
     public Article(String nomArticle, String description, LocalDateTime dateDebut, LocalDateTime dateFin,
@@ -88,7 +94,7 @@ public class Article {
     }
 
     public EtatVente getEtatVente() {
-        LocalDateTime now = LocalDateTime.now().plusHours(2);
+        LocalDateTime now = LocalDateTime.now();
         if (now.isBefore(dateDebut)) {
             return EtatVente.CREER;
         } else if (now.isAfter(dateDebut) && now.isBefore(dateFin)) {

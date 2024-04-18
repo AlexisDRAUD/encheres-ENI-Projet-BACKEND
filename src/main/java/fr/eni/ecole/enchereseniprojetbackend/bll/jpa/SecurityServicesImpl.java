@@ -36,6 +36,6 @@ public class SecurityServicesImpl implements SecurityService {
     }
 
     private boolean isTokenExpired(PasswordResetToken passToken) {
-        return passToken.getExpiryDate().isBefore(LocalDateTime.now().plusHours(2));
+        return passToken.getExpiryDate().isBefore(LocalDateTime.now());
     }
 }
