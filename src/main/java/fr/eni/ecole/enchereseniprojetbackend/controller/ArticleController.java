@@ -62,7 +62,7 @@ public class ArticleController {
 
     @PostMapping("/{pageNum}")
     public Page<Article> listarticle(@RequestBody @Valid SearchFilterInput searchFilter, @PathVariable("pageNum") int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum-1, 6, Sort.by("date_debut").descending());
+        Pageable pageable = PageRequest.of(pageNum-1, 6);
 
         if (searchFilter.countTrueBooleans() > 3) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Too many filters!");
