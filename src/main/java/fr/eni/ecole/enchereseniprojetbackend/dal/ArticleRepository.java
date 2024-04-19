@@ -22,8 +22,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             "OR (:wonBids is true AND (a.date_fin < :currentTime AND a.acheteur_id = :userId))" +
             "OR (:ongoingSales is true AND (a.vendeur_id = :userId AND a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
             "OR (:notStartedSales is true AND (a.vendeur_id = :userId AND a.date_debut > :currentTime))" +
-            "OR (:completedSales is true AND (a.vendeur_id = :userId AND a.date_fin < :currentTime)))" +
-            "ORDER BY a.date_debut DESC",
+            "OR (:completedSales is true AND (a.vendeur_id = :userId AND a.date_fin < :currentTime)))",
 
             countQuery = "SELECT COUNT(DISTINCT a.id) from article a " +
                     "left join enchere e on a.id = e.article_id " +
