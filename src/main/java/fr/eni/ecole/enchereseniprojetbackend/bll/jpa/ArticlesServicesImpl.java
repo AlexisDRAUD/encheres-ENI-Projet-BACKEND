@@ -29,7 +29,7 @@ public class ArticlesServicesImpl implements ArticlesService {
         String userId = (searchFilter.getUserId() == 0)
                 ? null : searchFilter.getUserId().toString();
         String search = (searchFilter.getSearch() == null || searchFilter.getSearch().isBlank())
-                ? null : searchFilter.getSearch().toLowerCase();
+                ? null : searchFilter.getSearch();
         String categorieId = (searchFilter.getCategorieId() == 0)
                 ? null : searchFilter.getCategorieId().toString();
 
