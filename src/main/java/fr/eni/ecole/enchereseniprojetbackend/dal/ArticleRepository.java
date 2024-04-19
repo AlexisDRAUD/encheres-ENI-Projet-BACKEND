@@ -15,18 +15,19 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(value = "select distinct a.* from article a " +
             "left join enchere e on a.id = e.article_id " +
-            "where (:nomArticle is null or a.nom_article LIKE %:nomArticle%)" +
+            "where (:nomArticle is null or LOWER(a.nom_article) LIKE %:nomArticle%)" +
             "AND (:categorieId is null or a.categorie_id=:categorieId)" +
             "AND ((:openBids is true AND (a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
             "OR (:ongoingBids is true AND (a.date_debut < :currentTime AND a.date_fin > :currentTime AND e.utilisateur_id = :userId))" +
             "OR (:wonBids is true AND (a.date_fin < :currentTime AND a.acheteur_id = :userId))" +
             "OR (:ongoingSales is true AND (a.vendeur_id = :userId AND a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
             "OR (:notStartedSales is true AND (a.vendeur_id = :userId AND a.date_debut > :currentTime))" +
-            "OR (:completedSales is true AND (a.vendeur_id = :userId AND a.date_fin < :currentTime)))",
+            "OR (:completedSales is true AND (a.vendeur_id = :userId AND a.date_fin < :currentTime)))" +
+            "ORDER BY a.date_debut DESC",
 
             countQuery = "SELECT COUNT(DISTINCT a.id) from article a " +
                     "left join enchere e on a.id = e.article_id " +
-                    "where (:nomArticle is null or a.nom_article LIKE %:nomArticle%)" +
+                    "where (:nomArticle is null or LOWER(a.nom_article) LIKE %:nomArticle%)" +
                     "AND (:categorieId is null or a.categorie_id=:categorieId)" +
                     "AND ((:openBids is true AND (a.date_debut < :currentTime AND a.date_fin > :currentTime))" +
                     "OR (:ongoingBids is true AND (a.date_debut < :currentTime AND a.date_fin > :currentTime AND e.utilisateur_id = :userId))" +
