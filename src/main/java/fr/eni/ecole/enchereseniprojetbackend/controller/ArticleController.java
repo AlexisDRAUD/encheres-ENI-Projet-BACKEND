@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -61,7 +62,7 @@ public class ArticleController {
 
     @PostMapping("/{pageNum}")
     public Page<Article> listarticle(@RequestBody @Valid SearchFilterInput searchFilter, @PathVariable("pageNum") int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum-1, 6);
+        Pageable pageable = PageRequest.of(pageNum-1, 6, Sort.by("date_debut").descending());
 
         if (searchFilter.countTrueBooleans() > 3) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Too many filters!");
